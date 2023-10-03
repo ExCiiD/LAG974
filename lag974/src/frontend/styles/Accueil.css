@@ -1,0 +1,100 @@
+/* SECTION EVENEMENTS */
+.sectionEvenement {
+    background-color: black;
+    background-image:
+        url('../images/topLeft.png'),
+        url('../images/bottomRight.png');
+    background-repeat: no-repeat;
+    background-position: 
+        top left, 
+        bottom right; 
+    width: 100%;
+    height: 715px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.topLeft{
+    position: relative;
+    top: -57px;
+    z-index: 0;
+}
+.bottomRight{
+    position: relative;
+    bottom: -5px;
+    right: 0;
+    overflow:unset
+}
+/* BANDE RESEAUX */
+.bandeReseaux{
+    background-color: #F7B400;
+    width: 100;
+    height: 100px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.iconeReseaux{
+    width: 48px;
+    height: 48px;
+    margin-left: 80px;
+    margin-right: 80px;
+}
+/* SECTION EQUIPES */
+.sectionEquipes {
+    background-color: black;
+    background-image:
+        url('../images/topLeftEquipes.png'),
+        url('../images/centerEquipe.png'),
+        url('../images/bottomRightEquipe.png');
+    background-repeat: no-repeat;
+    background-position: 
+        top left,
+        center,
+        bottom right; 
+    width: 100%;
+    height: 600px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* BANDE PARTENAIRES */
+.bandePartenaires{
+    background-color: #F7B400;
+    width: 100;
+    height: 100px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+@media (max-width:860px) {
+    /* BANDE RESEAUX */
+    .iconeReseaux{
+    width: 48px;
+    height: 48px;
+    margin-left: 50px;
+    margin-right: 50px;
+    }
+}
+@media (max-width:620px) {
+    /* BANDE RESEAUX */
+    .iconeReseaux{
+    width: 48px;
+    height: 48px;
+    margin-left: 25px;
+    margin-right: 25px;
+    }
+}
+
+@media (max-width:750px) {
+    /* SECTION EQUIPES */
+    .sectionEquipes {
+        overflow-y: scroll;
+        align-items: center;
+        justify-content: center;
+        display: block;
+    }
+}

@@ -1,10 +1,11 @@
 import React from "react";
-import '../styles/navbar.css';
-import { NavLink } from "react-router-dom";
-import logo_black from '../images/logo_black.png';
 import { useState } from 'react';
 
+import { NavLink } from "react-router-dom";
 
+import logo_black from '../images/logo_black.png';
+
+import '../styles/Navbar.css';
 
 function Navbar() {
     const [isOpen, setIsOpen] = useState(false);

@@ -1,11 +1,7 @@
-* {
-    margin: 0;
-    padding: 0;
-    font-family: 'Roboto', sans-serif;
-    font-weight: 400;
-}
 /* footer principal */
 .footer{
+    font-family: 'Roboto', sans-serif;
+    font-weight: 400;
     background-color: black;
     width: 100%;
     height: 220px;
@@ -58,8 +54,8 @@
 }
 /* icones reseaux */
 .footer_socials_icons{
-    padding-right: 10px;
-    padding-left: 10px;
+    margin-right: 15px;
+    margin-left: 15px;
     width: 28px;
     height: 28px;
 }
@@ -92,6 +88,12 @@
         display: grid;
         justify-content: center;
     }
+    .footer_socials_icons{
+    margin-right: 10px;
+    margin-left: 10px;
+    width: 28px;
+    height: 28px;
+    }
 }
 
 @media (max-width:470px) {
@@ -102,5 +104,14 @@
     flex-direction: column;
     align-items: center;
     justify-content: space-evenly;
-}
+    }
+    .footer_socials_icons{
+    margin-right: 5px;
+    margin-left: 5px;
+    width: 28px;
+    height: 28px;
+    }   
+    .mailFooter{
+        font-size: small;
+    }
 }

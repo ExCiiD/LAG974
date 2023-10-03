@@ -1,4 +1,5 @@
 import React from 'react';
+import { NavLink } from "react-router-dom";
 import logo_gold from '../images/logo_gold.png';
 import fFb from '../images/w_fb_icon.png';
 import fTwitch from '../images/w_twitch_icon.png';
@@ -22,12 +23,12 @@ function Footer() {
                 </div>
                 <div className='bFooter_right'>
                     <ul className='nav_footer'>
-                        <li><a href="#">ACCUEIL</a></li>
-                        <li><a href="#">A PROPOS</a></li>
-                        <li><a href="#">EVENEMENTS</a></li>
-                        <li><a href="#">EQUIPES </a></li>
-                        <li><a href="#">PARTENAIRES</a></li>
-                        <li><a href="#">CONTACT</a></li>
+                        <li><NavLink className='navLinks' to={"/"}>ACCUEIL</NavLink></li>
+                        <li><NavLink className='navLinks' to={"/Apropos"}>A PROPOS</NavLink></li>
+                        <li><NavLink className='navLinks' to={"/Evenements"}>EVENEMENTS</NavLink></li>
+                        <li> <NavLink className='navLinks' to={"/Equipes"}>EQUIPES</NavLink></li>
+                        <li><NavLink className='navLinks' to={"/Partenaires"}>PARTENAIRES</NavLink></li>
+                        <li><NavLink className='navLinks' to={"/Contact"}>CONTACT</NavLink></li>
                     </ul>
                 </div>
             </div>

@@ -1,5 +1,6 @@
 import React from "react";
 import '../styles/navbar.css';
+import { NavLink } from "react-router-dom";
 import logo_black from '../images/logo_black.png';
 import { useState } from 'react';
 
@@ -17,19 +18,25 @@ function Navbar() {
         <div className="navbar">
             <img src={logo_black} alt="logo" />
             <ul className={`navlist ${isOpen ? 'open' : ''}`}>
-                <li><a href="#">ACCUEIL</a></li>
-                <li><a href="#">A PROPOS</a></li>
-                <li><a href="#">EVENEMENTS</a></li>
-                <li className="menu-deroulant">
-                    <a href="#">EQUIPES ▼</a>
+                <li>
+                    <NavLink className='navLinks' to={"/"}>ACCUEIL</NavLink>
+                </li>
+                <li>
+                    <NavLink className='navLinks' to={"/Apropos"}>A PROPOS</NavLink>
+                </li>
+                <li>
+                    <NavLink className='navLinks' to={"/Evenements"}>EVENEMENTS</NavLink>
+                </li>
+                <li className="navlinks menu-deroulant">
+                    <NavLink className='navLinks' to={"/Equipes"}>EQUIPES</NavLink>
                     <ul className="sous-menu">
                         <li><a href="#">LOL</a></li>
                         <li><a href="#">RL</a></li>
                         <li><a href="#">VAL</a></li>
                     </ul>
                 </li>
-                <li><a href="#">PARTENAIRES</a></li>
-                <li><a href="#">CONTACT</a></li>
+                <li> <NavLink className='navLinks' to={"/Partenaires"}>PARTENAIRES</NavLink></li>
+                <li> <NavLink className='navLinks' to={"/Contact"}>CONTACT</NavLink></li>
             </ul>
             <a href="#" className="connexion_btn">SE CONNECTER</a>
             <div id="side-bar">

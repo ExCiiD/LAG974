@@ -7,14 +7,19 @@ import fb from '../images/facebook.png';
 import dc from '../images/discord.png';
 import twitch from '../images/twitch.png';
 import ytb from '../images/youtube.png';
-import Slider from '../components/Slider';
+import EventSlider from '../components/Slider';
 import GameCard from '../components/GameCard';
+import CurrentPartenaire from '../components/CurrentPartenaire';
 
 function Accueil() {
     return (
         <div className='accueil'>
             <div className='sectionEvenement'>
-                {/* <Slider /> */}
+                <EventSlider />
+                <div className='newLetterBloc'>
+                    <p>inscrivez vos à notre newsletter pour ne rater aucun evenement !</p>
+                    <a className='newsLetterBtn' href='#'>NEWSLETTER</a>
+                </div>
             </div>
             <div className='bandeReseaux'>
                 <a href='https://www.facebook.com/LAG974/?locale=fr_FR' ><img className='iconeReseaux' src={fb} alt='lien' /></a>
@@ -27,7 +32,13 @@ function Accueil() {
                 <GameCard />
                 <GameCard />
             </div>
-            <div className='bandePartenaires'>partenaires</div>
+            <div className='bandePartenaires'>
+                {/* <CurrentPartenaire />
+                <CurrentPartenaire />
+                <CurrentPartenaire />
+                <CurrentPartenaire />
+                <CurrentPartenaire /> */}
+            </div>
         </div>
     )
 }

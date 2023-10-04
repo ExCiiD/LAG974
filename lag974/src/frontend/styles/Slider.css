@@ -1,0 +1,86 @@
+/* SLIDER CONTAINER */
+.EventSlider{
+    width: 100%;
+    height: 70%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.eventArrow{
+    width: 40px;
+    height: 40px;
+    cursor: pointer;
+}
+.next{
+    position: absolute;
+    top: 43%;
+    right: 50px;
+    z-index: 1;
+}
+.prev{
+    position: absolute;
+    top: 43%;
+    left: 50px;
+    z-index: 1;
+}
+
+/* CARDS CONTAINER */
+.slideCardContainer{
+    width: 100%;
+    display: flex;
+    align-items: center;
+}
+/* CARTE SLIDE */
+.slideCard{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center; 
+
+}
+.imgTest{
+    width: 100%;
+    height: 100%;
+    border-radius: 15px;
+}
+.eventBtn{
+    display: block;
+    background-color: #F7B400;
+    text-decoration: none;
+    color: black;
+    font-family: 'Coda', sans-serif;
+    font-weight: 700;
+    border-radius: 10px;
+    padding: 3px 10px;
+    box-shadow: rgba(39, 38, 38, 0.1) 2px 4px 12px;
+    text-align: center;
+    position: relative;
+    top: -50%;
+    z-index: 1;
+}
+
+/* CARDS PLACEMENT */
+.previousCard{
+    width: 400px;
+    height: 350px;
+    opacity: 0.3;
+    transform: translateX(50%);
+    z-index: 0;
+}
+.currentCard{
+    z-index: 1;
+    width: 70%; 
+    height: 500px;
+}
+.currentCard:hover{
+    scale:1.01;
+}
+.nextCard{
+    width: 400px;
+    height: 350px;
+    opacity: 0.3;
+    transform: translateX(-50%);
+    z-index: 0;
+}
+
+

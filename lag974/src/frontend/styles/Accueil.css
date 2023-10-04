@@ -11,6 +11,7 @@
     width: 100%;
     height: 715px;
     display: flex;
+    flex-direction: column;
     align-items: center;
     justify-content: center;
 }
@@ -24,6 +25,27 @@
     bottom: -5px;
     right: 0;
     overflow:unset
+}
+.newLetterBloc{
+    height: 60px;
+    position: relative;
+    bottom: -35px;
+    color: white;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+}
+.newsLetterBtn{
+    background-color: #F7B400;
+    text-decoration: none;
+    color: black;
+    font-family: 'Coda', sans-serif;
+    font-weight: 700;
+    border-radius: 10px;
+    padding: 3px 10px;
+    box-shadow: rgba(223, 221, 221, 0.35) 2px 2px 4px;
+    text-align: center;
 }
 /* BANDE RESEAUX */
 .bandeReseaux{

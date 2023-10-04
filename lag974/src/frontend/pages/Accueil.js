@@ -1,6 +1,7 @@
 import React from 'react';
 
 import '../styles/Accueil.css';
+import '../styles/Titles.css';
 
 import fb from '../images/facebook.png';
 import dc from '../images/discord.png';
@@ -22,12 +23,10 @@ function Accueil() {
                 <a href='https://www.youtube.com/@LAG974' ><img className='iconeReseaux' src={ytb} alt='lien' /></a>
             </div>
             <div className='sectionEquipes'>
-                {/* <div className='cardContainer'> */}
-                    <GameCard />
-                    <GameCard />
-                    <GameCard />
-                </div>
-            {/* </div> */}
+                <GameCard />
+                <GameCard />
+                <GameCard />
+            </div>
             <div className='bandePartenaires'>partenaires</div>
         </div>
     )

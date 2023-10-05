@@ -6,6 +6,9 @@
     height: 110px;
     display: flex; 
     justify-content: space-around;  
+    position: fixed;
+    top: 0;
+    z-index: 10;
 }
 .navbar img{
     width: 100px;

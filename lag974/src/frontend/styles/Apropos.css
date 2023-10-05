@@ -1,0 +1,75 @@
+.apropos{
+    background-color: black;
+    width: 100%;
+}
+/* ONGLETS */
+.ongletContainer{
+    display: flex;
+    position: absolute;
+    right: 15px;
+    margin-top: 150px;
+}
+
+.onglet{background-color: #F7B400;
+    width: 180px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transform: skew(-35deg);
+    cursor: pointer;
+    margin-left: 20px;
+}
+.onglet h2{
+    transform: skew(35deg);
+}
+.onglet:hover{
+    background-color: #ffffff;
+}
+
+.onglet::after{
+    background-color: #ffffff;
+}
+
+.clipped{
+    clip-path: polygon(0% 0%, 85% 0%, 100% 100%, 0% 100%);
+}
+
+/* ASSOCIATION */
+.blocPresentation{
+    color: white;
+    width: 100%;
+    margin-top: 300px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+}
+/* images association */
+.blocP{
+    display: flex;
+    width: 90%;
+    justify-content: space-between;
+    align-items: center;
+}
+.paragraphePresentation{
+    max-width: 70%;
+}
+
+.imgPresentation{
+    background-color: gray;
+    width: 200px;
+    height: 200px;
+}
+
+/* INSCRIPTION TAFF */
+.inscriptionTaff{
+    display: flex;
+    flex-direction: column;
+    height: 200px;
+    align-items: center;
+    justify-content: center;
+}
+.inscriptionTaff p{
+    margin-bottom: 20px;
+}

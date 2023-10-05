@@ -3,3 +3,74 @@
     padding: 0;
     box-sizing: border-box;
 }
+
+.content {
+  margin-top: 110px; /* Ajustez la valeur en fonction de la hauteur de votre barre de navigation */
+}
+
+h1{
+    font-family: 'Maximum Impact', sans-serif;
+    font-size: 1.7rem;
+    font-weight: 300;
+}
+h2{
+    font-family: 'Maximum Impact', sans-serif;
+    font-size: 1.2rem;
+    font-weight: 300;
+}
+/*page title size and placement */
+.pageTitleCorners{
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    max-width: 220px;
+    height: 70px;
+    margin-left: auto;
+    margin-right: auto;
+    top: 100px;
+}
+/* page title corners */
+.pageTitleCorners {
+
+    background: 
+        linear-gradient(to right, #F7B400 4px, transparent 4px) 0 0,
+        linear-gradient(to right, #F7B400 4px, transparent 4px) 0 100%,
+        linear-gradient(to left, #F7B400 4px, transparent 4px) 100% 0,
+        linear-gradient(to left, #F7B400 4px, transparent 4px) 100% 100%,
+        linear-gradient(to bottom, #F7B400 4px, transparent 4px) 0 0,
+        linear-gradient(to bottom, #F7B400 4px, transparent 4px) 100% 0,
+        linear-gradient(to top, #F7B400 4px, transparent 4px) 0 100%,
+        linear-gradient(to top, #F7B400 4px, transparent 4px) 100% 100%;
+
+    background-repeat: no-repeat;
+    background-size: 20px 20px;
+    transform: skew(-35deg);
+}
+/* page title inside */
+.pageTitle {
+    background-color:#F7B400 ;
+    width: 90%;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2px;
+}   
+
+.pageTitle h1 {
+    transform: skew(35deg);
+}
+
+/* BUTTON */
+.normalButton{
+    background-color: #F7B400;
+        text-decoration: none;
+        color: black;
+        font-family: 'Coda', sans-serif;
+        font-weight: 700;
+        border-radius: 10px;
+        border: none;
+        padding: 3px 10px;
+        text-align: center;
+}

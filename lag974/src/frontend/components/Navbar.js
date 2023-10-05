@@ -27,21 +27,21 @@ function Navbar() {
                     <NavLink className='navLinks' to={"/"} onClick={closeMenu}>ACCUEIL</NavLink>
                 </li>
                 <li>
-                    <NavLink className='navLinks' to={"/Apropos"} onClick={closeMenu}>A PROPOS</NavLink>
+                    <NavLink className='navLinks' to={"/a_propos"} onClick={closeMenu}>A PROPOS</NavLink>
                 </li>
                 <li>
-                    <NavLink className='navLinks' to={"/Evenements"} onClick={closeMenu}>EVENEMENTS</NavLink>
+                    <NavLink className='navLinks' to={"/evenements"} onClick={closeMenu}>EVENEMENTS</NavLink>
                 </li>
                 <li className="navlinks menu-deroulant">
-                    <NavLink className='navLinks' to={"/Equipes"} onClick={closeMenu}>EQUIPES</NavLink>
+                    <NavLink className='navLinks' to={"/equipes"} onClick={closeMenu}>EQUIPES</NavLink>
                     <ul className="sous-menu">
                         <li><a href="#">LOL</a></li>
                         <li><a href="#">RL</a></li>
                         <li><a href="#">VAL</a></li>
                     </ul>
                 </li>
-                <li> <NavLink className='navLinks' to={"/Partenaires"} onClick={closeMenu}>PARTENAIRES</NavLink></li>
-                <li> <NavLink className='navLinks' to={"/Contact"} onClick={closeMenu}>CONTACT</NavLink></li>
+                <li> <NavLink className='navLinks' to={"/partenaires"} onClick={closeMenu}>PARTENAIRES</NavLink></li>
+                <li> <NavLink className='navLinks' to={"/contact"} onClick={closeMenu}>CONTACT</NavLink></li>
             </ul>
             <a href="#" className="connexion_btn">SE CONNECTER</a>
             <div id="side-bar">

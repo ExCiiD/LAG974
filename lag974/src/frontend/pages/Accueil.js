@@ -2,7 +2,6 @@ import React from 'react';
 import { useState } from 'react';
 
 import '../styles/Accueil.css';
-import '../styles/Titles.css';
 
 import fb from '../images/facebook.png';
 import dc from '../images/discord.png';
@@ -28,7 +27,7 @@ function Accueil() {
     };
 
     return (
-        <div className='accueil'>
+        <div className='content accueil'>
             <div className='sectionEvenement'>
                 <EventSlider />
                 <div className='newLetterBloc'>

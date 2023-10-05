@@ -8,6 +8,7 @@ import logo_black from '../images/logo_black.png';
 import '../styles/Navbar.css';
 
 function Navbar() {
+
     const [isOpen, setIsOpen] = useState(false);
 
     const toggleMenu = () => {

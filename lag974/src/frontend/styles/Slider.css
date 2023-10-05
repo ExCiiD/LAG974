@@ -13,20 +13,20 @@
 }
 .next{
     position: absolute;
-    top: 43%;
+    top: 400px;
     right: 50px;
     z-index: 1;
 }
 .prev{
     position: absolute;
-    top: 43%;
+    top: 400px;
     left: 50px;
     z-index: 1;
 }
 
 /* CARDS CONTAINER */
 .slideCardContainer{
-    width: 100%;
+    max-width: 100%;
     display: flex;
     align-items: center;
 }
@@ -66,10 +66,11 @@
     opacity: 0.3;
     transform: translateX(50%);
     z-index: 0;
+    transition: transform 0.5;
 }
 .currentCard{
     z-index: 1;
-    width: 70%; 
+    width: 1000px; 
     height: 500px;
 }
 .currentCard:hover{
@@ -82,5 +83,3 @@
     transform: translateX(-50%);
     z-index: 0;
 }
-
-

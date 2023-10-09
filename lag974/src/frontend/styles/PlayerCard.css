@@ -1,0 +1,32 @@
+.player-card {
+  width: 300px;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  padding: 20px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  margin: 20px;
+  text-align: center;
+  transform: skew(-10deg, 0deg);
+}
+
+/* Annuler l'effet skew pour les éléments intérieurs */
+.player-card > * {
+  transform: skew(10deg, 0deg);
+}
+
+.player-photo {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  margin: 10px auto;
+}
+
+.social-networks a {
+  margin: 0 10px;
+  text-decoration: none;
+  color: #007BFF;
+}
+
+.social-networks a:hover {
+  text-decoration: underline;
+}

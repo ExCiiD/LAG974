@@ -1,0 +1,28 @@
+.formulaire{
+    color: white;              /* Texte en blanc */
+    width: 100%;               /* Prendre toute la largeur disponible */
+    display: flex;             /* Utiliser Flexbox pour centrer les éléments */
+    justify-content: center;  /* Centrer horizontalement */
+    align-items: center;      /* Centrer verticalement */
+}
+form {
+    width: 600px;    
+    height: 600px;          /* Largeur du formulaire */
+    padding: 50px 0;            /* Espace intérieur autour du formulaire */
+    border: none;
+    border-radius: 5px;       /* Coins arrondis */
+}
+from ::placeholder{
+    color: white;
+    opacity: 1;
+}
+input[type="text"], input[type="email"], select, textarea {
+    width: 100%;              /* Largeur des champs de saisie */
+    padding: 10px;            /* Espace intérieur des champs de saisie */
+    margin-bottom: 50px;      /* Marge en dessous de chaque champ de saisie */
+    border: none;  /* Bordure blanche autour des champs de saisie */
+    background-color: #373737; /* Fond légèrement transparent pour chaque champ de saisie */
+    color: white;             /* Texte en blanc pour les champs de saisie */
+}
+
+

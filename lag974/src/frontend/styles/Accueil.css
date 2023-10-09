@@ -158,7 +158,7 @@
 /* BANDE PARTENAIRES */
 .bandePartenaires{
     background-color: #F7B400;
-    width: 100;
+    width: 100%;
     height: 100px;
     display: flex;
     justify-content: center;
@@ -224,8 +224,8 @@
         align-items: center;
         justify-content: center;
         display: block;
-        -ms-overflow-style: none;  /* Internet Explorer 10+ */
-        scrollbar-width: none;  /* Firefox */
+        /* -ms-overflow-style: none; */  /* Internet Explorer 10+ */
+        /* scrollbar-width: none;  */ /* Firefox */
     }
     .sectionEquipes::-webkit-scrollbar { 
         display: none;  /* Safari and Chrome */

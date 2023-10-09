@@ -3,65 +3,86 @@
     padding: 0;
     box-sizing: border-box;
 }
-
+.navLinks{
+    text-decoration: none;
+}
 .content {
-  margin-top: 110px; /* Ajustez la valeur en fonction de la hauteur de votre barre de navigation */
+  margin-top: 110px; 
+  background-color: black;
+  display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
 }
 
-h1{
+.center{
+    align-self: center;
+}
+/* h1{
     font-family: 'Maximum Impact', sans-serif;
     font-size: 1.7rem;
     font-weight: 300;
-}
+} */
 h2{
     font-family: 'Maximum Impact', sans-serif;
     font-size: 1.2rem;
     font-weight: 300;
 }
-/*page title size and placement */
-.pageTitleCorners{
-    position: relative;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    max-width: 220px;
-    height: 70px;
-    margin-left: auto;
-    margin-right: auto;
-    top: 100px;
-}
-/* page title corners */
-.pageTitleCorners {
+/* PAGE TITLE */
+    /* page title corners */
+    .pageTitleCorners {
+        
+        background: 
+        linear-gradient(to right, #F7B400 4px, transparent 4px) -5% 0,
+        linear-gradient(to right, #F7B400 4px, transparent 4px) 0% 100%,
+        linear-gradient(to left, #F7B400 4px, transparent 4px) 100% 5%,
+        linear-gradient(to left, #F7B400 4px, transparent 4px) 100% 0%,
+        linear-gradient(to bottom, #F7B400 4px, transparent 4px) 95% 0,
+        linear-gradient(to bottom, #F7B400 4px, transparent 4px) 100% 0%,
+        linear-gradient(to top, #F7B400 4px, transparent 4px) 0% 100%,
+        linear-gradient(to top, #F7B400 4px, transparent 4px) 5% 100%;
+        
+        background-repeat: no-repeat;
+        background-size: 20px 20px;
+        transform: skew(-35deg);
+    }
+    /*page title size and placement */
+    .pageTitleCorners{
+        position: relative;
+        display: inline-flex;
+        justify-content: center;
+        align-items: center; 
+        max-width: 450px;
+        height: 70px;
+        top: 100px;
+        margin-bottom: 185px;
+    }
+    /* page title inner background */
+    .pageTitle {
+        background-color:#F7B400 ;
+        height: 65%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 0 20px;
+        /* SPACE BETWEEN INNER BACKGROUND AND CORNERS */
+        margin: 0 15px;
+    }   
+    /* page title text */
+    .pageTitleContent{
+        font-family: 'Maximum Impact', sans-serif;
+        font-size: 1.7rem;
+        font-weight: 300;
+        vertical-align: middle; 
+        transform: skew(35deg);
+    }
 
-    background: 
-        linear-gradient(to right, #F7B400 4px, transparent 4px) 0 0,
-        linear-gradient(to right, #F7B400 4px, transparent 4px) 0 100%,
-        linear-gradient(to left, #F7B400 4px, transparent 4px) 100% 0,
-        linear-gradient(to left, #F7B400 4px, transparent 4px) 100% 100%,
-        linear-gradient(to bottom, #F7B400 4px, transparent 4px) 0 0,
-        linear-gradient(to bottom, #F7B400 4px, transparent 4px) 100% 0,
-        linear-gradient(to top, #F7B400 4px, transparent 4px) 0 100%,
-        linear-gradient(to top, #F7B400 4px, transparent 4px) 100% 100%;
-
-    background-repeat: no-repeat;
-    background-size: 20px 20px;
-    transform: skew(-35deg);
-}
-/* page title inside */
-.pageTitle {
-    background-color:#F7B400 ;
-    width: 90%;
-    height: 50px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 2px;
-}   
-
-.pageTitle h1 {
-    transform: skew(35deg);
-}
-
+/* IMAGE TEST BLOC */
+.imgTestBloc{
+    background-color: gray;
+    width: 200px;
+    height: 200px;
+    }
 /* BUTTON */
 .normalButton{
     background-color: #F7B400;
@@ -73,4 +94,74 @@ h2{
         border: none;
         padding: 3px 10px;
         text-align: center;
+        cursor: pointer;
+}
+
+/* MINI TITLE */
+ /* page title corners */
+    .pageTitleCornersMin {
+        
+        background: 
+        linear-gradient(to right, #F7B400 4px, transparent 4px) -5% 0,
+        linear-gradient(to right, #F7B400 4px, transparent 4px) 0% 100%,
+        linear-gradient(to left, #F7B400 4px, transparent 4px) 100% 5%,
+        linear-gradient(to left, #F7B400 4px, transparent 4px) 100% 0%,
+        linear-gradient(to bottom, #F7B400 4px, transparent 4px) 95% 0,
+        linear-gradient(to bottom, #F7B400 4px, transparent 4px) 100% 0%,
+        linear-gradient(to top, #F7B400 4px, transparent 4px) 0% 100%,
+        linear-gradient(to top, #F7B400 4px, transparent 4px) 5% 100%;
+        
+        background-repeat: no-repeat;
+        background-size: 20px 20px;
+        transform: skew(-35deg);
+    }
+    /*page title size and placement */
+    .pageTitleCornersMin{
+        position: relative;
+        display: inline-flex;
+        justify-content: center;
+        align-items: center; 
+        max-width: 450px;
+        top: 100px;
+        margin-bottom: 130px;
+    }
+    /* page title inner background */
+    .pageTitleMin {
+        height: 65%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 0 20px;
+        /* SPACE BETWEEN INNER BACKGROUND AND CORNERS */
+        margin: 0 15px;
+    }   
+    /* page title text */
+    .pageTitleContentMin{
+        font-family: 'Maximum Impact', sans-serif;
+        font-size: 1.7rem;
+        font-weight: 300;
+        vertical-align: middle; 
+        transform: skew(35deg);
+        color: #F7B400;
+    }
+
+
+@media (max-width: 450px) {
+    /* .pageTitleCorners{
+        width: ;
+    } */
+    .pageTitle {
+        background-color:#F7B400 ;
+        height: 65%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 0 20px;
+        /* SPACE BETWEEN INNER BACKGROUND AND CORNERS */
+        margin: 0 15px;
+    }   
+    .pageTitleContent{
+        font-size: 1.3rem;
+        font-weight: 300;
+    }
 }

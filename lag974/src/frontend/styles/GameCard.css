@@ -7,7 +7,7 @@
     transition: filter 0.3s ease-in-out;
     margin-left: 50px;
     margin-right: 50px;
-    transform: skew(-15deg, 0deg);
+    transform: skew(-5deg, 0deg);
     overflow: hidden;
 }
 
@@ -27,7 +27,7 @@
     justify-content: center;
     align-items: center;
     color: #c7da1c;
-    transform: skew(15deg, 0deg);
+    transform: skew(5deg, 0deg);
 }
 
 .imgContainer{
@@ -39,7 +39,7 @@
     width: 130%;
     height: 100%;
     border-radius: 10px;
-    transform:skew(15deg, 0deg) scale(1.3);
+    transform:skew(5deg, 0deg) scale(1.3);
     position: relative;
     top: 0px;
     left: -40px;

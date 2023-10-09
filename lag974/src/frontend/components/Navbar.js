@@ -35,9 +35,9 @@ function Navbar() {
                 <li className="navlinks menu-deroulant">
                     <NavLink className='navLinks' to={"/equipes"} onClick={closeMenu}>EQUIPES</NavLink>
                     <ul className="sous-menu">
-                        <li><a href="#">LOL</a></li>
-                        <li><a href="#">RL</a></li>
-                        <li><a href="#">VAL</a></li>
+                        <NavLink className='navLinks' to={"/equipes/roster"}>LOL</NavLink>
+                        <NavLink className='navLinks' to={"/equipes/roster"}>VAL</NavLink>
+                        <NavLink className='navLinks' to={"/equipes/roster"}>RL</NavLink>
                     </ul>
                 </li>
                 <li> <NavLink className='navLinks' to={"/partenaires"} onClick={closeMenu}>PARTENAIRES</NavLink></li>

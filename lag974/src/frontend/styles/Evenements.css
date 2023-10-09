@@ -1,0 +1,123 @@
+.evenements{
+    width: 100%;
+}
+
+.evenements a {
+    margin: 70px 0;
+}
+.sdImgContainer > div {
+    width: 350px;
+    height: 350px;
+    margin: 0 25px 25px 25px;
+}
+.evenements p{
+    color: white;
+    text-align: center;
+}
+/* PROCHAIN EVENEMENT  */
+.blocNextEvent{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+    .shortDesc{
+        display: flex;
+        justify-content: space-evenly;
+        align-items: center;
+        color: white;
+        flex-wrap: wrap;
+    }
+/*     .sdImgContainer{
+        width: 40%;
+    } */
+    .eventInfoContainer1{
+        display: flex;
+        width: 100%;
+        justify-content: space-evenly
+    }
+    .blocIc{
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+    }
+
+/* EVENEMENT EN COURS */
+.blocCurrentEvent{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+    .currentEventBtnContainer{
+        display: flex;
+        width: 100%;
+        justify-content: space-evenly;
+        margin: 15px 0;
+    }
+    .shortDesc2{
+        display: flex;;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+    }
+    .shortDesc2 p{
+        width: 50%;
+    }
+
+/* DERNIER EVENEMENT */
+.blocLastEvent{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+    .shortDesc3{
+        display: flex;
+        justify-content: space-evenly;
+        align-items: center;
+        color: white;
+        }
+    .eventInfoContainer2{
+        display: flex;
+        flex-direction: column;
+        width: 60%;
+        justify-content: space-evenly;
+        align-items: center;
+        padding-bottom: 120px;
+        margin-left: 100px;
+    }
+
+@media (max-width:815px) {
+    /* CONTAINER QUAND OU PROCHAIN EVENEMENT*/
+    .eventInfoContainer1{
+            display: flex;
+            flex-direction: column;
+            width: 60%;
+            justify-content: space-evenly;
+            align-items: center;
+            padding-bottom: 10px;
+            margin-left: 10px;
+            flex-wrap: wrap;
+    }
+    .shortDesc3{
+        flex-wrap: wrap;
+    }
+    /* CONTAINER QUAND OU DERNIER EVENEMENT*/
+    .eventInfoContainer2{
+            display: flex;
+            flex-direction: column;
+            width: 60%;
+            justify-content: space-evenly;
+            align-items: center;
+            padding-bottom: 120px;
+            margin-left: 10px;
+    }
+    /* IMAGE TEST */
+    .sdImgContainer > div {
+    width: 300px;
+    height: 300px;
+    margin: 0 25px 25px 25px;
+}
+}
+    

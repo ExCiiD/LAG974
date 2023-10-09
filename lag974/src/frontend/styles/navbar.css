@@ -55,7 +55,10 @@
 }
 
 .menu-deroulant:hover .sous-menu {
-    display: block;
+    display: flex;
+    flex-direction: column;
+    height: 150px;
+    justify-content: space-evenly;
 }
 
 .sous-menu li {

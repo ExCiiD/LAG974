@@ -1,16 +1,18 @@
 .apropos{
-    background-color: black;
+    
     width: 100%;
 }
 /* ONGLETS */
 .ongletContainer{
     display: flex;
-    position: absolute;
-    right: 15px;
-    margin-top: 150px;
+    position: relative;
+    right: -30%;
+    top: 20%;
+    margin-bottom: 80px;
 }
 
-.onglet{background-color: #F7B400;
+.onglet{
+    background-color: #F7B400;
     width: 180px;
     height: 40px;
     display: flex;
@@ -19,12 +21,17 @@
     transform: skew(-35deg);
     cursor: pointer;
     margin-left: 20px;
+    transition: background-color 0.3s ease;
 }
 .onglet h2{
     transform: skew(35deg);
 }
 .onglet:hover{
     background-color: #ffffff;
+}
+
+.onglet.active {
+    background-color: white;
 }
 
 .onglet::after{
@@ -39,37 +46,93 @@
 .blocPresentation{
     color: white;
     width: 100%;
-    margin-top: 300px;
     display: flex;
     flex-direction: column;
     align-items: center;
 
 }
-/* images association */
-.blocP{
-    display: flex;
-    width: 90%;
-    justify-content: space-between;
-    align-items: center;
-}
-.paragraphePresentation{
-    max-width: 70%;
-}
+    /* images association */
+    .blocP{
+        display: flex;
+        width: 90%;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 50px;
+    }
+    .blocPInverted{
+        display: flex;
+        width: 90%;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 50px;
+    }
+    .paragraphePresentation{
+        max-width: 70%;
+    }
 
-.imgPresentation{
-    background-color: gray;
-    width: 200px;
-    height: 200px;
-}
+    .imgPresentation{
+        background-color: gray;
+        width: 200px;
+        height: 200px;
+    }
 
-/* INSCRIPTION TAFF */
-.inscriptionTaff{
+    /* INSCRIPTION TAFF */
+    .inscriptionTaff{
+        display: flex;
+        flex-direction: column;
+        height: 200px;
+        align-items: center;
+        justify-content: center;
+    }
+    .inscriptionTaff p{
+        margin-bottom: 20px;
+    }
+/* HISTORIQUE */
+.blocHistorique{
+    color: white;
+    width: 100%;
+    height: 100vh;
     display: flex;
     flex-direction: column;
-    height: 200px;
     align-items: center;
-    justify-content: center;
+    overflow: scroll;
+    /* -ms-overflow-style: none; */  /* Internet Explorer 10+ */
+    /* scrollbar-width: none;  */ /* Firefox */
 }
-.inscriptionTaff p{
-    margin-bottom: 20px;
+.blocHistorique::-webkit-scrollbar { 
+        display: none;  /* Safari and Chrome */
+    }
+
+@media (max-width: 800px) {
+    .ongletContainer{
+        right: 0;
+        top: 20%;
+    }
+    .clipped{
+    clip-path: polygon(0% 0%, 85% 0%, 100% 100%, 0% 100%);
+    }
+}
+
+@media (max-width:450px) {
+    .onglet{
+    width: 140px;
+    height: 40px;
+    }
+    .clipped{
+    clip-path: polygon(0% 0%, 83% 0%, 100% 100%, 0% 100%);
+    }
+    .onglet > h2{
+        font-size: 0.8rem;
+    }
+    .blocP{
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+    .blocPInverted{
+        flex-wrap: wrap-reverse ;
+        justify-content: center;
+    }
+    .apropos p{
+        text-align: center;
+    }
 }

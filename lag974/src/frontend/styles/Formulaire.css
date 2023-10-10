@@ -6,11 +6,12 @@
     align-items: center;      /* Centrer verticalement */
 }
 form {
-    width: 600px;    
+    width: 700px;    
     height: 600px;          /* Largeur du formulaire */
     padding: 50px 0;            /* Espace intérieur autour du formulaire */
     border: none;
     border-radius: 5px;       /* Coins arrondis */
+    margin-bottom: 50px;
 }
 from ::placeholder{
     color: white;
@@ -25,4 +26,23 @@ input[type="text"], input[type="email"], select, textarea {
     color: white;             /* Texte en blanc pour les champs de saisie */
 }
 
+.formBtnContainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
 
+.messageArea {
+    height: 180px;
+}
+
+@media (max-width:760px) {
+    form {
+        width: 450px;    
+    }
+}
+@media (max-width:480px) {
+    form {
+        width: 300px;    
+    }
+}

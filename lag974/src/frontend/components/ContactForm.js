@@ -41,10 +41,10 @@ function ContactForm() {
                     </select>
                 </div>
                 <div>
-                    <textarea name="message" placeholder='MESSAGE..' value={formData.message} onChange={handleChange} />
+                    <textarea className="messageArea" name="message" placeholder='MESSAGE..' value={formData.message} onChange={handleChange} />
                 </div>
-                <div>
-                    <button className='normalButton center' type="submit">Envoyer</button>
+                <div className='formBtnContainer'>
+                    <button className='normalButton' type="submit">Envoyer</button>
                 </div>
             </form>
         </div>

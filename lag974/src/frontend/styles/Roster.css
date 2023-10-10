@@ -1,0 +1,25 @@
+.playerCardContainer{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+.rosterContentContainer{
+    display: flex;
+    width: 100%;
+    flex-wrap: wrap;
+}
+
+.playerCardContainer{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    width: 60%;
+}
+
+.rosterHistoricContainer{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 40%;
+}

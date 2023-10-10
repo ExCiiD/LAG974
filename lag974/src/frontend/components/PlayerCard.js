@@ -8,7 +8,9 @@ const PlayerCard = (props) => {
     return (
         <div className="player-card">
             <div className="lane">{lane}</div>
-            <img src={photoURL} alt={`${name}'s photo`} className="player-photo" />
+            <div className='playerImgContainer'>
+                <img src={photoURL} alt={`${name}'s photo`} className="player-photo" />
+            </div>
             <div className="social-networks">
                 {socialNetworks.map((network, index) => (
                     <a key={index} href={network.url} target="_blank" rel="noreferrer">{network.name}</a>

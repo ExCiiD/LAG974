@@ -1,0 +1,24 @@
+.event-list {
+  margin-top: 30px;
+  color:#F7B400 ;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.event-list ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+.event-list li {
+  border-radius: 5px;
+  padding: 10px;
+  margin-bottom: 10px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.event-name, .event-ranking, .event-date {
+  margin: 0 20px;
+}

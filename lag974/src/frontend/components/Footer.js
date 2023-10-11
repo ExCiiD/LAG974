@@ -2,7 +2,7 @@ import React from 'react';
 
 import { NavLink } from "react-router-dom";
 
-import logo_gold from '../images/logo_gold.png';
+import logo_white from '../images/logo_white.png';
 import fFb from '../images/w_fb_icon.png';
 import fTwitch from '../images/w_twitch_icon.png';
 import fYtb from '../images/w_ytb_icon.png';
@@ -15,7 +15,7 @@ function Footer() {
         <div className='footer'>
             <div className='footer_black'>
                 <div className='bFooter_left'>
-                    <img className='logo_footer' src={logo_gold} alt="logo" />
+                    <img className='logo_footer' src={logo_white} alt="logo" />
                     <a className='mailFooter' href='mailto:staff.gmail@gmail.com'>staff.lag974@gmail.com</a>
                     <div className='footer_socials_container'>
                         <a href='#'><img className='footer_socials_icons' src={fFb} alt="facebook icon" /></a>
@@ -27,11 +27,11 @@ function Footer() {
                 <div className='bFooter_right'>
                     <ul className='nav_footer'>
                         <li><NavLink className='navLinks' to={"/"}>ACCUEIL</NavLink></li>
-                        <li><NavLink className='navLinks' to={"/Apropos"}>A PROPOS</NavLink></li>
-                        <li><NavLink className='navLinks' to={"/Evenements"}>EVENEMENTS</NavLink></li>
-                        <li> <NavLink className='navLinks' to={"/Equipes"}>EQUIPES</NavLink></li>
-                        <li><NavLink className='navLinks' to={"/Partenaires"}>PARTENAIRES</NavLink></li>
-                        <li><NavLink className='navLinks' to={"/Contact"}>CONTACT</NavLink></li>
+                        <li><NavLink className='navLinks' to={"/a_propos"}>A PROPOS</NavLink></li>
+                        <li><NavLink className='navLinks' to={"/evenements"}>EVENEMENTS</NavLink></li>
+                        <li> <NavLink className='navLinks' to={"/equipes"}>EQUIPES</NavLink></li>
+                        <li><NavLink className='navLinks' to={"/partenaires"}>PARTENAIRES</NavLink></li>
+                        <li><NavLink className='navLinks' to={"/contact"}>CONTACT</NavLink></li>
                     </ul>
                 </div>
             </div>

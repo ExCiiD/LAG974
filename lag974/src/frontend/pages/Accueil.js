@@ -1,5 +1,6 @@
 import React from 'react';
 import { useState } from 'react';
+import { NavLink } from "react-router-dom";
 
 import '../styles/Accueil.css';
 
@@ -13,6 +14,7 @@ import CurrentPartenaire from '../components/CurrentPartenaire';
 import nlBtn from '../images/nlBtn.png';
 import logo_gold from '../images/logo_gold.png';
 import leaveBtn from '../images/leaveBtn.png';
+import Carousel3D from '../components/Carousel';
 
 function Accueil() {
 
@@ -29,7 +31,8 @@ function Accueil() {
     return (
         <div className='content accueil'>
             <div className='sectionEvenement'>
-                <EventSlider />
+                {/* <EventSlider /> */}
+                < Carousel3D />
                 <div className='newLetterBloc'>
                     <p>inscrivez vos à notre newsletter pour ne rater aucun evenement !</p>
                     <button className='newsLetterBtn' onClick={openPopUp} >NEWSLETTER</button>
@@ -54,9 +57,9 @@ function Accueil() {
                 <a href='https://www.youtube.com/@LAG974' ><img className='iconeReseaux' src={ytb} alt='lien' /></a>
             </div>
             <div className='sectionEquipes'>
-                <GameCard />
-                <GameCard />
-                <GameCard />
+                <NavLink className='navLinks' to={"/equipes/roster"}><GameCard /></NavLink>
+                <NavLink className='navLinks' to={"/equipes/roster"}><GameCard /></NavLink>
+                <NavLink className='navLinks' to={"/equipes/roster"}><GameCard /></NavLink>
             </div>
             <div className='bandePartenaires'>
                 {/* <CurrentPartenaire />

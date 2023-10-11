@@ -41,6 +41,39 @@ const Roster = () => {
                 name: "nom",
                 pseudo: "PSEUDO",
                 firstName: "prenom",
+            },
+            {
+                lane: "TOP",
+                photo: "photoJoueur.png",
+                socialNetworks: [
+                    { name: "Twitter", url: "https://twitter.com" },
+                    { name: "Facebook", url: "https://Facebook.com" }
+                ],
+                name: "nom",
+                pseudo: "PSEUDO",
+                firstName: "prenom",
+            },
+            {
+                lane: "TOP",
+                photo: "photoJoueur.png",
+                socialNetworks: [
+                    { name: "Twitter", url: "https://twitter.com" },
+                    { name: "Facebook", url: "https://Facebook.com" }
+                ],
+                name: "nom",
+                pseudo: "PSEUDO",
+                firstName: "prenom",
+            },
+            {
+                lane: "TOP",
+                photo: "photoJoueur.png",
+                socialNetworks: [
+                    { name: "Twitter", url: "https://twitter.com" },
+                    { name: "Facebook", url: "https://Facebook.com" }
+                ],
+                name: "nom",
+                pseudo: "PSEUDO",
+                firstName: "prenom",
             }
         ],
         events: [
@@ -51,6 +84,20 @@ const Roster = () => {
                 startDate: "01/10/2023",
                 endDate: "05/10/2023"
             },
+            {
+                id: 2,
+                name: "Nom de l'événement 1",
+                ranking: 1,
+                startDate: "01/10/2023",
+                endDate: "05/10/2023"
+            },
+            {
+                id: 3,
+                name: "Nom de l'événement 1",
+                ranking: 1,
+                startDate: "01/10/2023",
+                endDate: "05/10/2023"
+            }
             // ... Autres événements
         ]
     };

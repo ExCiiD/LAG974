@@ -1,0 +1,41 @@
+.partenaires img {
+  max-width: 100%;
+  height: auto;
+}
+
+.pSliderContainer{
+  width: 100%;
+  height: 41vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.pSlider{
+  width: 80%;
+}
+
+.slick-slide {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.slick-slider{
+  width: 80%;
+  margin-right: -11%;
+}
+
+.pContactUs{
+  display: flex;
+  color: white;
+  width: 70%;
+  justify-content: space-evenly;
+  margin-bottom: 80px;
+}
+@media (max-width: 480px) {
+    .slick-slider {
+        width: 90%;  /* Réduisez la taille comme vous le souhaitez, ici je l'ai réduite de 70% */
+        margin-left: -5%;
+    }
+}

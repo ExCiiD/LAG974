@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 
 import '../styles/Roster.css';
 
@@ -101,6 +101,9 @@ const Roster = () => {
             // ... Autres événements
         ]
     };
+
+    const [isEventHistoryVisible, setEventHistoryVisible] = useState(false);
+
     return (
         <div className='content roster'>
             <div className='pageTitleCorners'>
@@ -114,9 +117,17 @@ const Roster = () => {
                         <PlayerCard key={player.id} {...player} />
                     ))}
                 </div>
-                <div className='rosterHistoricContainer'>
-                    < EventHistoric events={team.events} />
-                </div>
+                <button className='mobileViewButton' onClick={() => setEventHistoryVisible(true)}>Voir l'historique</button>
+                {isEventHistoryVisible ? (
+                    <div className='eventHistoryOverlay' >
+                        <button className='closeButton' onClick={() => setEventHistoryVisible(false)}>Quitter</button>
+                        < EventHistoric events={team.events} />
+                    </div>
+                ) : (
+                        <div className='rosterHistoricContainer'>
+                            < EventHistoric events={team.events} />
+                        </div>
+                )}
             </div>
         </div>
     )

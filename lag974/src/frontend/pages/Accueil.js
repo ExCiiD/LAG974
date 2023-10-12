@@ -17,7 +17,7 @@ import leaveBtn from '../images/leaveBtn.png';
 import Carousel3D from '../components/Carousel';
 
 function Accueil() {
-
+    //POPUP
     const [popUp, setPopUp] = useState(false);
 
     const openPopUp = () => {
@@ -27,7 +27,14 @@ function Accueil() {
     const closePopUp = () => {
         setPopUp(false);
     };
-
+    //SIMULATION DONNEES API
+    /*     const logos = [
+            logo1, 
+            logo2, 
+            logo3, 
+            logo4
+        ]
+     */
     return (
         <div className='content accueil'>
             <div className='sectionEvenement'>
@@ -62,11 +69,9 @@ function Accueil() {
                 <NavLink className='navLinks' to={"/equipes/roster"}><GameCard /></NavLink>
             </div>
             <div className='bandePartenaires'>
-                {/* <CurrentPartenaire />
-                <CurrentPartenaire />
-                <CurrentPartenaire />
-                <CurrentPartenaire />
-                <CurrentPartenaire /> */}
+                {/* {logos.map((logo) =>(
+                    <CurrentPartenaire />
+                ) )}*/}
             </div>
         </div>
     )

@@ -96,13 +96,11 @@ const ArrowContainer = styled.a`
     align-items:center;
 
     @media (max-width: 768px) { // Ajustements pour les tablettes et les mobiles
-        transform: rotateZ(90deg) translateY(50px);
+        transform: rotateZ(90deg);
+        width: 100vw;
     }
 `;
 const ArrowButton = styled.button`
-    /* position: absolute; */
-    top: 50%;
-    transform: translateY(-50%);
     background: url(${props => props.img}) no-repeat center;
     background-size: contain;
     width: 3vw;
@@ -158,7 +156,7 @@ const Carousel = () => {
             opacity: 0.6, zIndex: 1
         },
         {
-            transform: 'rotateX(0deg) translateY(0) scale(1.3)',
+            transform: 'rotateX(0deg) translateY(0) scale(1.8)',
             opacity: 1, zIndex: 3
         },
         {

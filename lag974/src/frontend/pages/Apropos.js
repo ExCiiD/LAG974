@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import '../styles/Apropos.css'
 import { VerticalTimeline, VerticalTimelineElement } from 'react-vertical-timeline-component';
 import 'react-vertical-timeline-component/style.min.css';
+import { Link } from 'react-router-dom';
 
 const Apropos = () => {
     //POUR AFFICHER LE BON ONGLET 
@@ -61,7 +62,7 @@ const Apropos = () => {
                     </div>
                     <div className='inscriptionTaff'>
                         <p>Vous voulez participer ?</p>
-                        <a className='normalButton' href='#'>Rejoindre le staff</a>
+                        <Link className='normalButton' to="/contact?sujet=Devenir%20benevole">Rejoindre le staff</Link>
                     </div>
                 </div>
             )}

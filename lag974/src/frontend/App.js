@@ -1,16 +1,16 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 
-import Navbar from './frontend/components/Navbar';
-import Footer from './frontend/components/Footer';
+import Navbar from './components/Navbar';
+import Footer from './components/Footer';
 
-import Accueil from "./frontend/pages/Accueil";
-import Apropos from "./frontend/pages/Apropos";
-import Evenements from "./frontend/pages/Evenements";
-import Equipes from "./frontend/pages/Equipes";
-import Partenaires from "./frontend/pages/Partenaires";
-import Contact from "./frontend/pages/Contact";
-import Roster from "./frontend/pages/Roster";
-import EventDetails from "./frontend/pages/EventDetails";
+import Accueil from "./pages/Accueil";
+import Apropos from "./pages/Apropos";
+import Evenements from "./pages/Evenements";
+import Equipes from "./pages/Equipes";
+import Partenaires from "./pages/Partenaires";
+import Contact from "./pages/Contact";
+import Roster from "./pages/Roster";
+import EventDetails from "./pages/EventDetails";
 
 import './App.css';
 
@@ -30,7 +30,7 @@ function App() {
           <Route path="/partenaires" element={<Partenaires />} />
           <Route path="/contact" element={<Contact />} />
         </Routes>
-      <Footer />
+        <Footer />
       </BrowserRouter>
 
     </div>

@@ -1,4 +1,8 @@
+import mongoose from 'mongoose';
+
 import { Jeu } from "../models/jeu.js";
+import { Equipe } from '../models/equipe.js';
+
 import multer from "multer";
 
 /* // Configuration de multer pour spécifier où stocker les fichiers téléchargés
@@ -16,7 +20,12 @@ const upload = multer({ storage });
 
 // Fonction pour créer un nouveau jeu
 export const addJeu = async (req, res) => {
+    let session = null;
+
     try {
+        session = await mongoose.startSession();
+        session.startTransaction();
+
         const { nomJeu, iconeJeu, thumbnail } = req.body;
 
         const jeu = new Jeu({
@@ -27,10 +36,26 @@ export const addJeu = async (req, res) => {
 
         await jeu.save();
 
-        res.status(201).json(jeu);
+        // Créer une équipe avec la référence au jeu nouvellement créé
+        const equipe = new Equipe({
+            jeu: jeu._id, // Utilisez l'ID du jeu
+        });
+
+        await equipe.save();
+
+        await session.commitTransaction();
+        session.endSession();
+
+        res.status(201).json({ jeu, equipe });
     } catch (error) {
         console.error(error);
-        res.status(500).json({ error: 'Une erreur est survenue lors de la création du jeu.' });
+
+        if (session) {
+            await session.abortTransaction();
+            session.endSession();
+        }
+
+        res.status(500).json({ error: 'Une erreur est survenue lors de la création du jeu et de l\'équipe.' });
     }
 };
 

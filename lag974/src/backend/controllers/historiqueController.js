@@ -96,27 +96,31 @@ historiqueController.delete = async (req, res) => {
 //FONCTION SPECIALES :
 
 historiqueController.addEvent = async (req, res) => {
+    const { historiqueId } = req.params; // Récupération de l'ID de l'historique depuis les paramètres de la route
+    const { nomEventHistoric, top, nombreEquipes, dateDeDebut, dateDeFin } = req.body; // Récupération des données de l'événement depuis le corps de la requête
+
     try {
-        // Trouve l'entrée historique appropriée par ID 
-        const historique = await Historique.findOne({ refEquipe: req.body.refEquipe });
+        const historique = await Historique.findById(historiqueId);
 
         if (!historique) {
-            return res.status(404).json({ message: 'Historique non trouvé pour cette équipe.' });
+            return res.status(404).json({ message: "Historique non trouvé." });
         }
 
-        // Ajoute le nouvel événement
-        historique.evenements.push({
-            nomEventHistoric: req.body.nomEventHistoric,
-            classement: { top: req.body.top },
-            nombreEquipes: req.body.nombreEquipes,
-            dateDeDebut: req.body.dateDeDebut,
-            dateDeFin: req.body.dateDeFin
-        });
+        // Création du nouvel événement
+        const nouvelEvenement = {
+            nomEventHistoric,
+            classement: { top },
+            nombreEquipes,
+            dateDeDebut,
+            dateDeFin
+        };
 
-        // Sauvegardez les modifications
-        await historique.save();
+        // Ajout de l'événement à l'historique
+        historique.evenements.push(nouvelEvenement);
 
-        res.status(201).json({ message: 'Événement ajouté avec succès.', historique });
+        await historique.save(); // Sauvegarde des changements dans la base de données
+
+        res.status(201).json({ message: "Événement ajouté avec succès.", evenement: nouvelEvenement });
     } catch (error) {
         res.status(500).json({ message: error.message });
     }

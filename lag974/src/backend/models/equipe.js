@@ -25,5 +25,10 @@ equipeSchema.pre('find', function (next) {
     this.populate('jeu', 'nomJeu'); // spécifiez le champ à peupler
     next();
 });
+equipeSchema.pre('find', function (next) {
+    // 'this' est l'instance de la requête
+    this.populate({ path: 'roster.refJoueur', select: 'pseudoJoueur', }); // spécifiez le champ à peupler
+    next();
+});
 
 export const Equipe = mongoose.model('Equipe', equipeSchema);

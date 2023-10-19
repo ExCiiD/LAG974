@@ -18,6 +18,9 @@ historiqueRouter.put('/historiques/:id', historiqueController.update);
 // Route pour supprimer un historique par son ID
 historiqueRouter.delete('/historiques/:id', historiqueController.delete);
 
+// Route pour ajouter un événement à un historique spécifique
+historiqueRouter.post('/historiques/:historiqueId/event', historiqueController.addEvent);
+
 // Route pour mettre à jour un événement spécifique dans un historique
 historiqueRouter.put('/historiques/:historiqueId/event/:eventId', historiqueController.updateEvent);
 

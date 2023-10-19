@@ -43,7 +43,7 @@ joueurController.update = async (req, res) => {
         if (!joueur) {
             return res.status(404).send('Joueur non trouvé.');
         }
-        return res.status(200).send(joueur);
+        return res.status(200).send('Joueur mis a jour.', joueur);
     } catch (error) {
         return res.status(500).send(error);
     }

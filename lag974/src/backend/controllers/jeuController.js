@@ -2,6 +2,7 @@ import mongoose from 'mongoose';
 
 import { Jeu } from "../models/jeu.js";
 import { Equipe } from '../models/equipe.js';
+import { Historique } from '../models/historique.js';
 
 import multer from "multer";
 
@@ -33,14 +34,22 @@ export const addJeu = async (req, res) => {
             iconeJeu,
             thumbnail,
         });
-
         await jeu.save();
 
         // Créer une équipe avec la référence au jeu nouvellement créé
         const equipe = new Equipe({
-            jeu: jeu._id, // Utilisez l'ID du jeu
+            jeu: jeu._id, 
         });
+        await equipe.save();
 
+        // Créer un historique avec la référence a l'équipe nouvellement créé
+        const historique = new Historique({
+            refEquipe: equipe._id,
+        });
+        await historique.save();
+
+        // Mettre à jour l'équipe avec la référence à l'historique
+        equipe.historique = historique._id;
         await equipe.save();
 
         await session.commitTransaction();
@@ -122,7 +131,7 @@ export const deleteJeu = async (req, res) => {
             return res.status(404).json({ message: 'Jeu non trouvé.' });
         }
 
-        res.status(204).json(); // Réponse sans contenu pour indiquer la suppression réussie
+        res.status(204).json({ message: 'jeu supprimé !' }); // Réponse sans contenu pour indiquer la suppression réussie
     } catch (error) {
         console.error(error);
         res.status(500).json({ error: 'Une erreur est survenue lors de la suppression du jeu.' });

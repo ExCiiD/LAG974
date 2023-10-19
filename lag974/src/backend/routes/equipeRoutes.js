@@ -18,5 +18,8 @@ equipeRouter.put('/equipes/:id', equipeController.update);
 // Route pour supprimer une équipe par son ID
 equipeRouter.delete('/equipes/:id', equipeController.delete);
 
-/* // Route pour ajouter un joueur à l'équipe
-equipeRouter.post('/equipes/:id/roster', equipeController.addPlayer); */
+// Route pour ajouter un joueur à l'équipe
+equipeRouter.post('/equipes/:idequipe/roster/:idjoueur', equipeController.addJoueur);
+
+// Route pour retirer un joueur de l'équipe
+equipeRouter.delete('/equipes/:idequipe/roster/:idjoueur', equipeController.removeJoueur);

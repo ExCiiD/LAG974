@@ -10,10 +10,10 @@ adminController.create = async (req, res) => {
         const admin = new Admin({
             username,
             email,
-            // Le mot de passe est généré lors de la sauvegarde grâce au middleware 'save' dans modèle
         });
 
-        // Sauvegarde l'administrateur et déclenche le middleware 'save' pour générer le mot de passe
+        await admin.generateRandomPassword();
+        // Sauvegarde l'administrateur
         await admin.save();
 
         //envoie le mail 

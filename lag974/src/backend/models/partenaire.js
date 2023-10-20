@@ -3,11 +3,11 @@ import mongoose from 'mongoose';
 const PartenaireSchema = new mongoose.Schema({
     nomPartenaire: {
         type: String,
-        required: [true, 'Le nom du partenaire est obligatoire'],
+        required: true,
     },
     logoPartenaire: {
         type: String,
-        required: [true, 'Le logo est obligatoire'],
+        required: true,
     },
     lienSitePartenaire: {
         type: String,

@@ -6,16 +6,16 @@ export const partenaireController = {};
 partenaireController.create = async (req, res) => {
     try {
         // Récupération des données du partenaire à partir du corps de la requête
-        const { nom, logo, lien_site_partenaire } = req.body;
+        const { nomPartenaire, logoPartenaire, lienSitePartenaire } = req.body;
 
         // Création d'un nouveau document Partenaire
-        const nouveauPartenaire = new Partenaire({
-            nom,
-            logo,
-            lien_site_partenaire,
+        const partenaire = new Partenaire({
+            nomPartenaire,
+            logoPartenaire,
+            lienSitePartenaire,
         });
 
-        await nouveauPartenaire.save();
+        await partenaire.save();
 
         res.status(201).json({
             success: true,

@@ -1,5 +1,6 @@
 import mongoose from 'mongoose';
 import crypto from 'crypto';
+import bcrypt from 'bcrypt';
 import nodemailer from 'nodemailer';
 
 import dotenv from 'dotenv';
@@ -22,13 +23,29 @@ const adminSchema = new mongoose.Schema({
     password: {
         type: String,
     },
-
+    role: {  // s'assurer que le rôle est présent et défini correctement
+        type: String,
+        enum: ['staff', 'mainAdmin'],
+        default: 'staff',
+    },
 });
 
 // Génération de mot de passe aléatoire
-adminSchema.methods.generateRandomPassword = function () {
+adminSchema.methods.generateRandomPassword = async function () {
     // Générer un mot de passe sécurisé et aléatoire
     this.password = crypto.randomBytes(10).toString('hex');
+
+    const salt = await bcrypt.genSalt(10); // Ceci génère le "sel" pour le hachage
+    this.password = await bcrypt.hash(randomPassword, salt); // Hache le mot de passe avec le sel
+};
+
+// Méthode pour vérifier le mot de passe
+adminSchema.methods.isValidPassword = async function (password) {
+    try {
+        return await bcrypt.compare(password, this.password);
+    } catch (error) {
+        throw error;
+    }
 };
 
 // Méthode d'envoi de lien de connexion
@@ -61,15 +78,6 @@ adminSchema.methods.sendConnectionLink = async function () {
         console.error('Il y a eu une erreur en envoyant l\'email: ', error);
     }
 };
-
-/* // middleware 'save' pour la génération de mot de passe
-adminSchema.pre('save', function (next) {
-    if (!this.isModified('password')) {
-        return next();
-    }
-    this.generateRandomPassword();
-    next();
-}); */
 
 export const Admin = mongoose.model('Admin', adminSchema);
 

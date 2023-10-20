@@ -1,6 +1,52 @@
 import { Admin } from "../models/admin.js";
+import jwt from 'jsonwebtoken';
+import bcrypt from 'bcrypt';
+
+import dotenv from 'dotenv';
+dotenv.config({ path: '../../.env' });
 
 export const adminController = {};
+
+// Méthode pour gérer la connexion des administrateurs
+adminController.login = async (req, res) => {
+    const { username, password } = req.body;
+
+    try {
+        // Trouver l'utilisateur par username
+        const user = await Admin.findOne({ username });
+
+        if (!user) {
+            return res.status(401).json({ message: "Authentification échouée. Utilisateur non trouvé." });
+        }
+
+        // Vérifier le mot de passe
+        const isMatch = await bcrypt.compare(password, user.password);
+
+        if (!isMatch) {
+            return res.status(401).json({ message: "Authentification échouée. Mot de passe incorrect." });
+        }
+
+        // Utilisateur authentifié, maintenant nous créons le JWT
+        const tokenPayload = {
+            id: user._id, // l'identifiant de l'utilisateur
+            username: user.username, // le nom d'utilisateur
+            role: user.role, // le rôle de l'utilisateur (admin/staff)
+        };
+
+        // Signer le JWT avec le secret et inclure le rôle dans le payload
+        const token = jwt.sign(tokenPayload, process.env.JWT_SECRET, { expiresIn: '1h' }); // expire dans 1 heure
+
+        // Répondre avec le token
+        res.json({
+            message: "Connecté avec succès!",
+            token: token,
+        });
+    } catch (error) {
+        console.error("Erreur d'authentification: ", error);
+        res.status(500).json({ message: "Erreur interne du serveur." });
+    }
+
+};
 
 //Fonction pour creer un nouvel admin
 adminController.create = async (req, res) => {

@@ -55,7 +55,7 @@ export const addJeu = async (req, res) => {
         await session.commitTransaction();
         session.endSession();
 
-        res.status(201).json({ jeu, equipe });
+        res.status(201).json({ message: 'jeu crée avec succès !', jeu, equipe });
     } catch (error) {
         console.error(error);
 
@@ -113,7 +113,7 @@ export const updateJeu = async (req, res) => {
             return res.status(404).json({ message: 'Jeu non trouvé.' });
         }
 
-        res.status(200).json(jeu);
+        res.status(200).json({ message: 'jeu mis a jour !', jeu });
     } catch (error) {
         console.error(error);
         res.status(500).json({ error: 'Une erreur est survenue lors de la mise à jour du jeu.' });

@@ -1,6 +1,7 @@
 import { Admin } from "../models/admin.js";
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcrypt';
+const saltRounds = 10; //pour la génération du sel bcrypt
 
 import dotenv from 'dotenv';
 dotenv.config({ path: '../../.env' });
@@ -94,7 +95,7 @@ adminController.findOne = async (req, res) => {
     try {
         let admin = await Admin.findById(req.params.id);
         if (admin) {
-            return res.status(200).send(admin);
+            return res.status(200).send({ message: 'admin trouvé', admin });
         } else {
             return res.status(404).send({ message: "Admin non trouvé" });
         }
@@ -106,13 +107,29 @@ adminController.findOne = async (req, res) => {
 // Fonction pour mettre à jour un admin
 adminController.update = async (req, res) => {
     try {
-        let admin = await Admin.findByIdAndUpdate(req.params.id, req.body, { new: true });
+        const { id } = req.params; // l'ID de l'admin à mettre à jour
+        const updateData = req.body;
+
+        // Vérifiez si un nouveau mot de passe est fourni
+        if (updateData.password) {
+            // Un nouveau mot de passe est fourni, donc nous devons le hacher avant de procéder à la mise à jour
+            const hashedPassword = await bcrypt.hash(updateData.password, saltRounds);
+            updateData.password = hashedPassword; // remplacez le mot de passe en clair par le haché
+        }
+
+        // Effectuer la mise à jour dans la base de données
+        let admin = await Admin.findByIdAndUpdate(id, updateData, { new: true });
+
         if (admin) {
-            return res.status(200).send(admin);
+            // La mise à jour a réussi et l'admin modifié est retourné
+            return res.status(200).send({ message: 'admin modifié', admin });
         } else {
+            // Aucun admin correspondant trouvé pour cet ID
             return res.status(404).send({ message: "Admin non trouvé" });
         }
     } catch (error) {
+        // Gérer les erreurs lors de la tentative de mise à jour
+        console.error("Erreur de mise à jour de l'admin: ", error);
         return res.status(500).send(error);
     }
 };

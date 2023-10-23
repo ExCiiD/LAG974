@@ -1,10 +1,11 @@
 import express from 'express';
 import { equipeController } from '../controllers/equipeController.js';
+import { requireRole } from '../middleware/permissionsCheck.js';
 
 export const equipeRouter = express.Router();
 
 // Route pour créer une nouvelle équipe
-equipeRouter.post('/equipes', equipeController.create);
+equipeRouter.post('/equipes', requireRole(['mainAdmin', 'staff']), equipeController.create);
 
 // Route pour récupérer toutes les équipes
 equipeRouter.get('/equipes', equipeController.findAll);
@@ -13,13 +14,13 @@ equipeRouter.get('/equipes', equipeController.findAll);
 equipeRouter.get('/equipes/:id', equipeController.findOne);
 
 // Route pour mettre à jour une équipe par son ID
-equipeRouter.put('/equipes/:id', equipeController.update);
+equipeRouter.put('/equipes/:id', requireRole(['mainAdmin', 'staff']), equipeController.update);
 
 // Route pour supprimer une équipe par son ID
-equipeRouter.delete('/equipes/:id', equipeController.delete);
+equipeRouter.delete('/equipes/:id', requireRole(['mainAdmin', 'staff']), equipeController.delete);
 
 // Route pour ajouter un joueur à l'équipe
-equipeRouter.post('/equipes/:idequipe/roster/:idjoueur', equipeController.addJoueur);
+equipeRouter.post('/equipes/:idequipe/roster/:idjoueur', requireRole(['mainAdmin', 'staff']), equipeController.addJoueur);
 
 // Route pour retirer un joueur de l'équipe
-equipeRouter.delete('/equipes/:idequipe/roster/:idjoueur', equipeController.removeJoueur);
+equipeRouter.delete('/equipes/:idequipe/roster/:idjoueur', requireRole(['mainAdmin', 'staff']), equipeController.removeJoueur);

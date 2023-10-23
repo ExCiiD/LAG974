@@ -36,7 +36,7 @@ adminSchema.methods.generateRandomPassword = async function () {
     this.password = crypto.randomBytes(10).toString('hex');
 
     const salt = await bcrypt.genSalt(10); // Ceci génère le "sel" pour le hachage
-    this.password = await bcrypt.hash(randomPassword, salt); // Hache le mot de passe avec le sel
+    this.password = await bcrypt.hash(this.password, salt); // Hache le mot de passe avec le sel
 };
 
 // Méthode pour vérifier le mot de passe
@@ -66,8 +66,8 @@ adminSchema.methods.sendConnectionLink = async function () {
         from: '"lag974" <arisonsteaven@gmail.com>', // adresse de l'expéditeur
         to: this.email, // liste des destinataires
         subject: 'Lien de connexion pour lag974', // Sujet du courrier
-        text: `Vous avez été inscrit en tant qu'administrateur du site lag974. Veuillez utiliser le lien suivant pour vous connecter: ${connectionLink}`, // corps du texte en texte brut
-        html: `<p>Vous avez été inscrit en tant qu'administrateur du site lag974. Veuillez utiliser le lien suivant pour vous connecter: <a href="${connectionLink}">${connectionLink}</a></p>`, // corps du texte en HTML
+        text: `Vous avez été inscrit en tant qu'administrateur du site lag974 avec les identifiants suivant : id : ${this.username} mdp : ${this.password}. Veuillez utiliser le lien suivant pour vous connecter: ${connectionLink}`, // corps du texte en texte brut
+        html: `<p>Vous avez été inscrit en tant qu'administrateur du site lag974 avec les identifiants suivant </b> : id : ${this.username} </b> mdp : ${this.password}. </b> Veuillez utiliser le lien suivant pour vous connecter: <a href="${connectionLink}">${connectionLink}</a></p>`, // corps du texte en HTML
     };
 
     // Envoi de l'e-mail

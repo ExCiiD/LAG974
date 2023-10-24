@@ -2,8 +2,8 @@ import React, { useState } from 'react'
 
 import '../styles/Roster.css';
 
-import PlayerCard from '../components/PlayerCard'
-import EventHistoric from '../components/EventHistoric';
+import PlayerCard from '../components/PlayerCard.js'
+import EventHistoric from '../components/EventHistoric.js';
 
 const Roster = () => {
     const team = {
@@ -124,9 +124,9 @@ const Roster = () => {
                         < EventHistoric events={team.events} />
                     </div>
                 ) : (
-                        <div className='rosterHistoricContainer'>
-                            < EventHistoric events={team.events} />
-                        </div>
+                    <div className='rosterHistoricContainer'>
+                        < EventHistoric events={team.events} />
+                    </div>
                 )}
             </div>
         </div>

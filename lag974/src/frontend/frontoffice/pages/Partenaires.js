@@ -47,13 +47,13 @@ const Partenaires = () => {
                 </div>
             </div>
             <div className='pSliderContainer'>
-                <Slider {...settings} style={{ display: 'flex', alignItems: 'center' }}>
+                {/* <Slider {...settings} style={{ display: 'flex', alignItems: 'center' }}>
                     {logos.map((logo, index) => (
                         <div key={index} style={{ padding: '10px', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
                             <img src={logo} alt={`logo-${index}`} style={{ width: '80px', height: '80px', borderRadius: '100%', display: 'block' }} />
                         </div>
                     ))}
-                </Slider>
+                </Slider> */}
             </div>
             <div className='pContactUs'>
                 <p>vous voulez rejoindre notre groupe en tant que partenaire?</p>

@@ -1,6 +1,6 @@
 import React from 'react'
 
-import GameCard from '../components/GameCard';
+import GameCard from '../components/GameCard.js';
 import { NavLink } from "react-router-dom";
 
 import '../styles/Equipes.css';

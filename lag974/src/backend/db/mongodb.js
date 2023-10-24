@@ -8,7 +8,7 @@ export const connectDB = async () => {
     const adminPassword = encodeURIComponent(process.env.ADMIN_PASSWORD)
 
     //modification de l'url qiu permettra de se connecter a la base de données
-    const url = `mongodb+srv://arisonsteaven:${adminPassword}@${process.env.HOST}/${process.env.DB_NAME}`
+    const url = `mongodb+srv://arisonsteaven:${adminPassword}@${process.env.MONGOHOST}/${process.env.DB_NAME}`
     console.log(url);
     try {
         await mongoose.connect(url, {});

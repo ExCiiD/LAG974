@@ -1,23 +1,23 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 
-import Navbar from './components/Navbar';
-import Footer from './components/Footer';
+import Navbar from './frontend/frontoffice/components/Navbar.js';
+import Footer from './frontend/frontoffice/components/Footer.js';
 
-import Accueil from "./pages/Accueil";
-import Apropos from "./pages/Apropos";
-import Evenements from "./pages/Evenements";
-import Equipes from "./pages/Equipes";
-import Partenaires from "./pages/Partenaires";
-import Contact from "./pages/Contact";
-import Roster from "./pages/Roster";
-import EventDetails from "./pages/EventDetails";
+//pages front office
+import Accueil from "./frontend/frontoffice/pages/Accueil.js";
+import Apropos from "./frontend/frontoffice/pages/Apropos.js";
+import Evenements from "./frontend/frontoffice/pages/Evenements.js";
+import Equipes from "./frontend/frontoffice/pages/Equipes.js";
+import Partenaires from "./frontend/frontoffice/pages/Partenaires.js";
+import Contact from "./frontend/frontoffice/pages/Contact.js";
+import Roster from "./frontend/frontoffice/pages/Roster.js";
+import EventDetails from "./frontend/frontoffice/pages/EventDetails.js";
 
 import './App.css';
 
 function App() {
   return (
     <div className="App">
-      {/* pages */}
       <BrowserRouter>
         <Navbar />
         <Routes>

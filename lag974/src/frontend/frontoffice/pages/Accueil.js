@@ -4,17 +4,19 @@ import { NavLink } from "react-router-dom";
 
 import '../styles/Accueil.css';
 
+//composants :
+import CurrentPartenaire from '../components/CurrentPartenaire.js';
+import Carousel3D from '../components/Carousel.js';
+import GameCard from '../components/GameCard.js';
+
+//images :
 import fb from '../images/facebook.png';
 import dc from '../images/discord.png';
 import twitch from '../images/twitch.png';
 import ytb from '../images/youtube.png';
-import EventSlider from '../components/Slider';
-import GameCard from '../components/GameCard';
-import CurrentPartenaire from '../components/CurrentPartenaire';
 import nlBtn from '../images/nlBtn.png';
 import logo_gold from '../images/logo_gold.png';
 import leaveBtn from '../images/leaveBtn.png';
-import Carousel3D from '../components/Carousel';
 
 function Accueil() {
     //POPUP
@@ -38,7 +40,6 @@ function Accueil() {
     return (
         <div className='content accueil'>
             <div className='sectionEvenement'>
-                {/* <EventSlider /> */}
                 < Carousel3D />
                 <div className='newLetterBloc'>
                     <p>inscrivez vos à notre newsletter pour ne rater aucun evenement !</p>

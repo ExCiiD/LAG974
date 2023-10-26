@@ -19,8 +19,8 @@ const port = 7000;
 const app = express();
 
 app.use(express.json());
-app.use(jeuRouter, evenementRouter, joueurRouter, equipeRouter, historiqueRouter, partenaireRouter, adminRouter);
-app.get('/', (req, res) => { res.send("API lag974") });
+app.use('/lagapi', jeuRouter, evenementRouter, joueurRouter, equipeRouter, historiqueRouter, partenaireRouter, adminRouter);
+app.get('/lagapi', (req, res) => { res.send("API lag974") });
 
 app.listen(port, () =>
     console.log(`Le serveur a démarré au port ${port}`)

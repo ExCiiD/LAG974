@@ -72,7 +72,7 @@ export const addJeu = async (req, res) => {
 export const getJeux = async (req, res) => {
     try {
         const jeux = await Jeu.find();
-        res.status(200).json(jeux);
+        res.status(200).json({ success: true, jeux });
     } catch (error) {
         console.error(error);
         res.status(500).json({ error: 'Une erreur est survenue lors de la récupération des jeux.' });

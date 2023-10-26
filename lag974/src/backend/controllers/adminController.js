@@ -84,7 +84,7 @@ adminController.create = async (req, res) => {
 adminController.findAll = async (req, res) => {
     try {
         let admins = await Admin.find({});
-        return res.status(200).send(admins);
+        return res.status(200).send({ success: true, admins });
     } catch (error) {
         return res.status(500).send(error);
     }

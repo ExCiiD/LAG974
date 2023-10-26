@@ -17,7 +17,7 @@ joueurController.create = async (req, res) => {
 joueurController.findAll = async (req, res) => {
     try {
         let joueurs = await Joueur.find({});
-        return res.status(200).send(joueurs);
+        return res.status(200).send({ success: true, joueurs });
     } catch (error) {
         return res.status(500).send(error);
     }

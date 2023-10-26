@@ -18,10 +18,10 @@ function Footer() {
                     <img className='logo_footer' src={logo_white} alt="logo" />
                     <a className='mailFooter' href='mailto:staff.gmail@gmail.com'>staff.lag974@gmail.com</a>
                     <div className='footer_socials_container'>
-                        <a href='#'><img className='footer_socials_icons' src={fFb} alt="facebook icon" /></a>
-                        <a href='#'><img className='footer_socials_icons' src={fDc} alt="discord icon" /></a>
-                        <a href='#'><img className='footer_socials_icons' src={fTwitch} alt="twitch icon" /></a>
-                        <a href='#'><img className='footer_socials_icons' src={fYtb} alt="youtube icon" /></a>
+                        <a href='https://www.facebook.com/LAG974/?locale=fr_FR'><img className='footer_socials_icons' src={fFb} alt="facebook icon" /></a>
+                        <a href='https://discord.gg/AApCDYp4XJ'><img className='footer_socials_icons' src={fDc} alt="discord icon" /></a>
+                        <a href='https://www.twitch.tv/lag974'><img className='footer_socials_icons' src={fTwitch} alt="twitch icon" /></a>
+                        <a href='https://www.youtube.com/@LAG974'><img className='footer_socials_icons' src={fYtb} alt="youtube icon" /></a>
                     </div>
                 </div>
                 <div className='bFooter_right'>

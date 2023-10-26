@@ -1,0 +1,43 @@
+.header{
+    background-color: #F7B400;
+    width: 100vw;
+    height: 15vh;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+/* coté gauche */
+.logoBack{
+    margin-left: 50px;
+}
+
+/* coté droit */
+.admin-info{
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    width: 350px;
+    margin-right: 50px
+}
+ .adminIcon{
+    width: 50px;
+    height: 50px;
+    border-radius: 100%;
+ }
+
+ .adminIcon img{
+    width: 100%;
+ }
+
+.signOutBtn{
+    background-color: #ffffff00;
+    border: none;
+    width: 50px;
+    height: 50px;
+    cursor: pointer;
+}
+
+.signOutBtn img {
+    width: 100%;
+}

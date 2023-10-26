@@ -45,7 +45,7 @@ historiqueController.create = async (req, res) => {
 historiqueController.findAll = async (req, res) => {
     try {
         let historiques = await Historique.find({});
-        return res.status(200).send(historiques);
+        return res.status(200).send({ success: true, historiques });
     } catch (error) {
         return res.status(500).send(error);
     }

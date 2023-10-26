@@ -18,7 +18,7 @@ equipeController.create = async (req, res) => {
 equipeController.findAll = async (req, res) => {
     try {
         let equipes = await Equipe.find({});
-        return res.status(200).send(equipes);
+        return res.status(200).send({ success: true, equipes });
     } catch (error) {
         return res.status(500).send(error);
     }

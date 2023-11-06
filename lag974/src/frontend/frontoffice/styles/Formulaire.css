@@ -5,7 +5,7 @@
     justify-content: center;  /* Centrer horizontalement */
     align-items: center;      /* Centrer verticalement */
 }
-form {
+.formulaire form {
     width: 700px;    
     height: 600px;          /* Largeur du formulaire */
     padding: 50px 0;            /* Espace intérieur autour du formulaire */
@@ -13,11 +13,11 @@ form {
     border-radius: 5px;       /* Coins arrondis */
     margin-bottom: 50px;
 }
-from ::placeholder{
+.formulaire ::placeholder{
     color: white;
     opacity: 1;
 }
-input[type="text"], input[type="email"], select, textarea {
+.formulaire input[type="text"], input[type="email"], select, textarea {
     width: 100%;              /* Largeur des champs de saisie */
     padding: 10px;            /* Espace intérieur des champs de saisie */
     margin-bottom: 50px;      /* Marge en dessous de chaque champ de saisie */

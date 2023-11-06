@@ -7,6 +7,7 @@ export const evenementRouter = new express.Router();
 // Route pour créer un nouvel événement
 evenementRouter.post('/evenements', requireRole(['mainAdmin', 'staff']), evenementController.createEvenement);
 
+// Note : 'image' est le nom du champ dans le formulaire où l'utilisateur télécharge le fichier
 // Route pour récupérer tous les événements
 evenementRouter.get('/evenements', evenementController.getAllEvenements);
 

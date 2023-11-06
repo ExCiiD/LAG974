@@ -10,8 +10,8 @@ equipeRouter.post('/equipes', requireRole(['mainAdmin', 'staff']), equipeControl
 // Route pour récupérer toutes les équipes
 equipeRouter.get('/equipes', equipeController.findAll);
 
-// Route pour récupérer une équipe par son ID
-equipeRouter.get('/equipes/:id', equipeController.findOne);
+// Route pour récupérer une équipe par son game ID
+equipeRouter.get('/equipes/:jeuid', equipeController.findByJeuId);
 
 // Route pour mettre à jour une équipe par son ID
 equipeRouter.put('/equipes/:id', requireRole(['mainAdmin', 'staff']), equipeController.update);

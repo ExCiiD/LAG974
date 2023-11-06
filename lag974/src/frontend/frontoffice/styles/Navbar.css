@@ -6,6 +6,7 @@
     height: 110px;
     display: flex; 
     justify-content: space-around;  
+    align-items: center;
     position: fixed;
     top: 0;
     z-index: 10;
@@ -71,8 +72,8 @@
 /* bouton de connexion */
 .connexion_btn{
     background-color:#F7B400 ;
-    display: none;
-    /* display: flex; */ /* A FAIRE PLUS TARD = AFFICHER QUE POUR LES ADMINS QUI ONT UN LIEN */
+    display: block;
+
     justify-content: center;
     align-items: center;
     width: 140px;
@@ -88,6 +89,17 @@
     color: #F7B400;
 }
 
+.navbarBtn{
+    width: 30px;
+    height: 30px;
+    background: none;
+    border: none;
+    cursor: pointer;
+}
+
+.navbarBtn img {
+    width: 100%;
+}
 /* bouton menu burger */
 .toggle-btn {
     display: none;
@@ -152,5 +164,8 @@
     }
     .navLinks{
         color: white;
+    }
+    .navbarBtn{
+    display: none;
     }
 }

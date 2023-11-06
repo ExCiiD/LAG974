@@ -4,43 +4,6 @@ import { Equipe } from "../models/equipe.js";
 
 export const historiqueController = {};
 
-// Fonction pour créer un nouvel historique
-historiqueController.create = async (req, res) => {
-    try {
-        // Extraire refEquipe et autres informations nécessaires du corps de la requête
-        const { refEquipe, ...historiqueData } = req.body;
-
-        // Trouver l'équipe associée à partir de refEquipe
-        const equipe = await Equipe.findById(refEquipe);
-
-        // Si aucune équipe n'est trouvée, renvoyer une erreur
-        if (!equipe) {
-            return res.status(404).send({ message: "Équipe non trouvée" });
-        }
-
-        // Créer un nouvel objet historique avec les données de l'équipe
-        let historique = new Historique((req.body)/* {
-            ...historiqueData,  // données originales de l'historique
-            nomEquipe: equipe.nom,  // ou tout champ pertinent de l'objet `equipe`
-            // ... autres champs à compléter depuis `equipe`
-        } */);
-
-        // Sauvegarder le nouvel historique dans la base de données
-        await historique.save();
-
-        // Optionnellement, mettre à jour l'objet equipe avec la référence de cet historique
-        equipe.historique.push(historique);
-        await equipe.save();
-
-        // Renvoie une réponse avec l'historique créé
-        return res.status(201).send(historique);
-
-    } catch (error) {
-        // Gestion des erreurs
-        return res.status(500).send(error);
-    }
-};
-
 // Fonction pour récupérer la liste des historiques
 historiqueController.findAll = async (req, res) => {
     try {
@@ -51,31 +14,16 @@ historiqueController.findAll = async (req, res) => {
     }
 };
 
-// Fonction pour récupérer un historique spécifique par ID
-historiqueController.findOne = async (req, res) => {
+// Fonction pour obtenir un historique par refJeu (gameId)
+historiqueController.getByGameId = async (req, res) => {
     try {
-        let historique = await Historique.findById(req.params.id);
-        if (historique) {
-            return res.status(200).send(historique);
-        } else {
-            return res.status(404).send({ message: "Historique non trouvé" });
+        const historique = await Historique.findOne({ refJeu: req.params.jeuid });
+        if (!historique) {
+            return res.status(404).json({ message: "Historique non trouvée avec cet ObjectId de jeu." });
         }
+        res.status(200).json(historique);
     } catch (error) {
-        return res.status(500).send(error);
-    }
-};
-
-// Fonction pour mettre à jour un historique
-historiqueController.update = async (req, res) => {
-    try {
-        let historique = await Historique.findByIdAndUpdate(req.params.id, req.body, { new: true });
-        if (historique) {
-            return res.status(200).send(historique);
-        } else {
-            return res.status(404).send({ message: "Historique non trouvé" });
-        }
-    } catch (error) {
-        return res.status(500).send(error);
+        res.status(500).json({ message: "Erreur lors de la récupération de l'Historique.", error });
     }
 };
 
@@ -97,7 +45,7 @@ historiqueController.delete = async (req, res) => {
 
 historiqueController.addEvent = async (req, res) => {
     const { historiqueId } = req.params; // Récupération de l'ID de l'historique depuis les paramètres de la route
-    const { nomEventHistoric, top, nombreEquipes, dateDeDebut, dateDeFin } = req.body; // Récupération des données de l'événement depuis le corps de la requête
+    const { nomEventHistoric, classement, nombreEquipes, dateDeDebut, dateDeFin } = req.body; // Récupération des données de l'événement depuis le corps de la requête
 
     try {
         const historique = await Historique.findById(historiqueId);
@@ -109,7 +57,7 @@ historiqueController.addEvent = async (req, res) => {
         // Création du nouvel événement
         const nouvelEvenement = {
             nomEventHistoric,
-            classement: { top },
+            classement,
             nombreEquipes,
             dateDeDebut,
             dateDeFin

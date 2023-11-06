@@ -1,10 +1,10 @@
 import mongoose from "mongoose";
-const { Schema, model } = mongoose;
+const { Schema } = mongoose;
 
 const historiqueSchema = new mongoose.Schema({
-    refEquipe: {
+    refJeu: {
         type: Schema.Types.ObjectId,
-        ref: 'Equipe',
+        ref: 'Jeu',
         required: true,
     },
     evenements: [
@@ -14,14 +14,10 @@ const historiqueSchema = new mongoose.Schema({
                 required: true,
             },
             classement: {
-                top: {
-                    type: Number,
-                    required: true,
-                },
+                type: Number,
             },
             nombreEquipes: {
                 type: Number,
-                required: true,
             },
             dateDeDebut: {
                 type: Date,
@@ -29,7 +25,6 @@ const historiqueSchema = new mongoose.Schema({
             },
             dateDeFin: {
                 type: Date,
-                required: true,
             },
         },
     ],

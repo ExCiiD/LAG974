@@ -1,6 +1,11 @@
 import jwt from 'jsonwebtoken';
 
-export const requireRole = (role) => {
+export const requireRole = (allowedRoles) => {
+    // Si allowedRoles est une chaîne, convertissez-la en tableau
+    if (typeof allowedRoles === 'string') {
+        allowedRoles = [allowedRoles];
+    }
+
     return function (req, res, next) {
         // Récupérer le token depuis l'en-tête de la requête
         const token = req.header('Authorization')?.replace('Bearer ', '');
@@ -13,15 +18,12 @@ export const requireRole = (role) => {
             // Vérifier la validité du token et décrypter son contenu
             const decodedToken = jwt.verify(token, process.env.JWT_SECRET);
 
-            // Comparer le rôle de l'utilisateur avec le rôle requis pour la route
-            if (decodedToken.role === role) {
+            // Vérifier si le rôle du token est inclus dans le tableau des rôles autorisés
+            if (allowedRoles.includes(decodedToken.role)) {
                 // Stocker l'information de l'utilisateur dans l'objet 'req' pour une utilisation ultérieure
                 req.user = decodedToken;
-
-                // L'utilisateur a le bon rôle, on appelle 'next()' pour passer au prochain middleware/contrôleur
                 next();
             } else {
-                // L'utilisateur n'a pas le bon rôle, on bloque l'accès
                 return res.status(403).json({ message: 'Accès refusé. Vous n\'avez pas les autorisations nécessaires.' });
             }
         } catch (error) {

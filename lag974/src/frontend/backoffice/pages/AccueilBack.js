@@ -23,12 +23,10 @@ const AccueilBack = () => {
                 <SideBar setActiveTab={setActiveTab} />
                 <div className="accueilBackComponentContent">
                     {activeTab === "evenements" && <EventComponent />}
-                    {/* 
                     {activeTab === "joueurs" && <JoueursComponent />}
                     {activeTab === "equipes" && <EquipesComponent />}
                     {activeTab === "partenaires" && <PartenairesComponent />}
-                    {activeTab === "admins" && <AdminsComponent />} 
-                    */}
+                    {activeTab === "admins" && <AdminsComponent />}
                 </div>
             </div>
         </div>

@@ -8,7 +8,7 @@ const jeuSchema = new mongoose.Schema({
     iconeJeu: {
         type: String,
     },
-    thumbnail: {
+    thumbnailJeu: {
         type: String,
     },
 });

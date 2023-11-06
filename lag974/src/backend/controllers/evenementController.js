@@ -7,8 +7,10 @@ evenementController.createEvenement = async (req, res) => {
     try {
         const data = req.body;
 
-        // Vous pouvez ajouter des validations supplémentaires ici avant de créer un événement
-
+        if (req.file) {
+            const uploadPath = 'public/uploads'; // Chemin utilisé par express.static
+            data.image = req.file.path.replace(new RegExp(`^${uploadPath}`), '');
+        }
         const newEvenement = await Evenement.create(data);
         res.status(201).json({ success: true, message: "Événement créé avec succès", evenement: newEvenement });
     } catch (error) {

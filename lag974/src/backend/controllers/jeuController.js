@@ -44,7 +44,7 @@ export const addJeu = async (req, res) => {
 
         // Créer un historique avec la référence a l'équipe nouvellement créé
         const historique = new Historique({
-            refEquipe: equipe._id,
+            refJeu: jeu._id,
         });
         await historique.save();
 

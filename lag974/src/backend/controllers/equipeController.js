@@ -1,5 +1,6 @@
 import { Equipe } from "../models/equipe.js";
 import { Joueur } from "../models/joueur.js";
+import mongoose from "mongoose";
 
 export const equipeController = {};
 
@@ -24,17 +25,16 @@ equipeController.findAll = async (req, res) => {
     }
 };
 
-// Fonction pour récupérer une équipe spécifique par ID
-equipeController.findOne = async (req, res) => {
+// Fonction pour récupérer une équipe spécifique par Game ID (ID du Jeu)
+equipeController.findByJeuId = async (req, res) => {
     try {
-        let equipe = await Equipe.findById(req.params.id);
-        if (equipe) {
-            return res.status(200).send(equipe);
-        } else {
-            return res.status(404).send({ message: "Équipe non trouvée" });
+        const equipe = await Equipe.findOne({ jeu: req.params.jeuid });
+        if (!equipe) {
+            return res.status(404).json({ message: "Équipe non trouvée avec cet ObjectId de jeu." });
         }
+        res.status(200).json(equipe);
     } catch (error) {
-        return res.status(500).send(error);
+        res.status(500).json({ message: "Erreur lors de la récupération de l'équipe.", error });
     }
 };
 

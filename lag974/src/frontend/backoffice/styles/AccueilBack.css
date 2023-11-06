@@ -1,3 +1,11 @@
 .accueilContentContainer{
     display: flex;
+
+}
+
+.accueilBackComponentContent{
+    width: 85vw;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }

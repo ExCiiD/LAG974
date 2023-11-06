@@ -22,7 +22,7 @@ const evenementSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    thumbnail: {
+    thumbnailEvent: {
         type: String,
     },
     typeTournoi: {

@@ -1,23 +1,38 @@
 import fs from 'fs';
 import path from 'path';
+import { fileURLToPath } from 'url';
+import mongoose from 'mongoose';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 const updateModelImage = async (Model, itemId, imagePath, imageNameField = 'thumbnail') => {
+    if (!mongoose.Types.ObjectId.isValid(itemId)) {
+        return { success: false, message: 'Invalid item ID.' };
+    }
+
     try {
         const itemToUpdate = await Model.findById(itemId);
 
         if (itemToUpdate) {
-            // Supprimez l'ancienne image si elle existe
-            if (itemToUpdate[imageNameField] && fs.existsSync(path.join(__dirname, '../../../public', itemToUpdate[imageNameField]))) {
-                fs.unlinkSync(path.join(__dirname, '../../../public', itemToUpdate[imageNameField]));
+            // Build the absolute path to the public directory
+            const publicPath = path.join(__dirname, '../../../public');
+
+            // Check si l'image existe et le supprime
+            const oldImagePath = itemToUpdate[imageNameField] ? path.join(publicPath, itemToUpdate[imageNameField]) : null;
+            if (oldImagePath && fs.existsSync(oldImagePath)) {
+                fs.unlinkSync(oldImagePath);
             }
 
-            // Mettez à jour le chemin de l'image dans le document
+            // Update le chemin 
             itemToUpdate[imageNameField] = imagePath;
 
-            // Enregistrez le document mis à jour dans la base de données
+            // Sauvegarde 
             await itemToUpdate.save();
 
             return { success: true, item: itemToUpdate };
+        } else {
+            return { success: false, message: 'Item not found.' };
         }
 
         return { success: false, message: 'Item not found.' };

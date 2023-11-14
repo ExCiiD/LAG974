@@ -1,7 +1,7 @@
 import jwt from 'jsonwebtoken';
 
 export const requireRole = (allowedRoles) => {
-    // Si allowedRoles est une chaîne, convertissez-la en tableau
+    // Si allowedRoles est une chaîne, la convertir en tableau
     if (typeof allowedRoles === 'string') {
         allowedRoles = [allowedRoles];
     }

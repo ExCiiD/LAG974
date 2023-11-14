@@ -3,78 +3,13 @@ import axios from 'axios';
 
 import RosterComponent from '../components/RosterComponent.js';
 import HistoricComponent from '../components/HistoricComponent.js';
+import { GameBar } from '../components/GameBar.js';
+import { GameForm } from '../components/GameForm.js';
 
 import '../styles/EquipeComponent.css';
 import '../styles/List.css';
 
-//images :
-import createBtn from '../images/createBtn.png';
-
-const token = localStorage.getItem('token');
-
-///////////////////////////////////////////////////SOUS COMPOSANT GAMEBAR
-const GameBar = ({ games, onSelectGame, onAddGame }) => {
-    return (
-        <div className='gameBar'>
-            {games.map(game => (
-                <img
-                    key={game._id}
-                    src={game.icone}
-                    alt={game.nomJeu}
-                    onClick={() => onSelectGame(game._id)}
-                />
-            ))}
-            <button onClick={onAddGame}><img src={createBtn} alt='create Button' /></button>
-        </div>
-    );
-};
-///////////////////////////////////////////////////
-
-///////////////////////////////////////////////////SOUS COMPOSANT FORMULAIRE POUR LA CREATION DE JEU
-const GameForm = ({ onAdd, onCancel }) => {
-    const [formData, setFormData] = useState({
-        nomJeu: '',
-        icone: '',
-        thumbnail: ''
-    });
-
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        onAdd(formData);
-        setFormData({
-            nomJeu: '',
-            icone: '',
-            thumbnail: ''
-        });
-    };
-
-    return (
-        <form className='backForm' onSubmit={handleSubmit}>
-            <input
-                className='backFormInput'
-                value={formData.nomJeu}
-                onChange={e => setFormData({ ...formData, nomJeu: e.target.value })}
-                placeholder="Nom du jeu"
-            />
-            <input
-                className='backFormInput'
-                value={formData.icone}
-                onChange={e => setFormData({ ...formData, icone: e.target.value })}
-                placeholder="URL de l'icône"
-            />
-            <input
-                className='backFormInput'
-                value={formData.thumbnail}
-                onChange={e => setFormData({ ...formData, thumbnail: e.target.value })}
-                placeholder="URL de la vignette"
-            />
-            <button className='backFormBtn' type="submit">Créer le jeu</button>
-            <button className='backFormBtn' type="button" onClick={onCancel}>Annuler</button>
-        </form>
-    );
-};
-///////////////////////////////////////////////////
-
+// Images :
 
 const EquipeComponent = () => {
 
@@ -82,6 +17,7 @@ const EquipeComponent = () => {
     const [selectedGameId, setSelectedGameId] = useState(null);
     const [showForm, setShowForm] = useState(false);
     const [selectedComponent, setSelectedComponent] = useState(null);
+    const token = localStorage.getItem('token');
 
     useEffect(() => {
         fetchGames();
@@ -139,6 +75,61 @@ const EquipeComponent = () => {
             });
     };
 
+    const handleUpdateGame = (gameData, gameId) => {
+        axios.put(`/lagapi/jeux/${gameId}`, gameData, {
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        })
+            .then(response => {
+                if (response.data) {
+                    // Update the local state to reflect the changes
+                    setGames(prevGames => prevGames.map(game =>
+                        game._id === gameId ? { ...game, ...response.data } : game
+                    ));
+                } else {
+                    console.error("La réponse du serveur n'est pas ce qui est attendu:", response.data);
+                }
+            })
+            .catch(error => {
+                console.error("Erreur lors de la mise à jour du jeu:", error);
+            });
+    };
+
+    //FONCTIONS POUR GERER L UPDATE
+    const [showUpdateForm, setShowUpdateForm] = useState(false);
+    const [updateGameData, setUpdateGameData] = useState({});
+
+    // Function to open update form with selected game data
+    const handleOpenUpdateForm = (gameId) => {
+        const gameToUpdate = games.find(game => game._id === gameId);
+        if (gameToUpdate) {
+            setUpdateGameData(gameToUpdate);
+            setShowUpdateForm(true);
+        }
+    };
+
+
+    //FONCTION POUR GERER LA SUPPRESSION
+    const handleDeleteGame = (gameId) => {
+        if (window.confirm("Êtes-vous sûr de vouloir supprimer cette equipe ?")) {
+            axios.delete(`/lagapi/jeux/${gameId}`, {
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            })
+                .then(() => {
+                    // Mettre à jour l'état pour refléter la suppression
+                    setGames(prevGames => prevGames.filter(game => game._id !== gameId));
+                    setSelectedGameId(null);
+                    setSelectedComponent(null);
+                })
+                .catch(error => {
+                    console.error("Erreur lors de la suppression du jeu:", error);
+                });
+        }
+    };
+
     // Fonction pour afficher le composant Roster ou Historique
     const handleShowComponent = (componentName) => {
         setSelectedComponent(componentName);
@@ -147,11 +138,28 @@ const EquipeComponent = () => {
     return (
         <div className='equipeContainer'>
             <GameBar games={games} onSelectGame={handleSelectGame} onAddGame={handleAddGame} />
-            {showForm && <GameForm onAdd={handleCreateGame} onCancel={handleCancel} />}
+            {showForm && !showUpdateForm && (
+                <GameForm
+                    onAdd={handleCreateGame}
+                    onCancel={handleCancel}
+                    isUpdate={false}
+                />
+            )}
+
+            {showUpdateForm && (
+                <GameForm
+                    initialData={updateGameData}
+                    onUpdate={handleUpdateGame}
+                    onCancel={() => setShowUpdateForm(false)}
+                    isUpdate={true}
+                />
+            )}
             {selectedGameId && (
                 <div>
                     <button onClick={() => handleShowComponent('roster')}>Roster</button>
                     <button onClick={() => handleShowComponent('historic')}>Historique</button>
+                    <button onClick={() => handleDeleteGame(selectedGameId)}>Supprimer l'équipe</button>
+                    <button onClick={() => handleOpenUpdateForm(selectedGameId)}>Modifier le jeu</button>
                 </div>
             )}
 

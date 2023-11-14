@@ -19,7 +19,7 @@ const EventComponent = () => {
         dateFin: '',
         jeuEvenement: '',
         description: '',
-        thumbnail: '',
+        thumbnailEvent: '',
         typeTournoi: 'online',
         liens: {
             inscription: '',
@@ -30,30 +30,11 @@ const EventComponent = () => {
         nombreParticipants: '',
     });
 
-    const [token] = useState(localStorage.getItem('token'));
-
-    const [imagePreview, setImagePreview] = useState(null);
-
+    const token = localStorage.getItem('token');
 
     useEffect(() => {
         fetchEvents();
     }, []);
-
-    useEffect(() => {
-        if (editingEventId) {
-            // Supposons que votre API renvoie l'URL de l'image sous `event.thumbnail`
-            setImagePreview(eventData.thumbnail);
-        }
-    }, [editingEventId, eventData.thumbnail]);
-
-    useEffect(() => {
-        // Lorsque le composant est démonté ou que l'image change, libérez l'ancienne URL d'objet
-        return () => {
-            if (imagePreview) {
-                URL.revokeObjectURL(imagePreview);
-            }
-        };
-    }, [imagePreview]);
 
     const fetchEvents = async () => {
         try {
@@ -61,14 +42,14 @@ const EventComponent = () => {
             if (Array.isArray(response.data.evenements)) {
                 setEvents(response.data.evenements);
             } else {
-                console.error("Server response is not an array:", response.data);
+                console.error("Ce n'est pas un tableau:", response.data);
             }
         } catch (error) {
             console.error("Error fetching events:", error);
         }
     };
 
-
+    //FONCTIONS DE CHANGEMENT D'ETATS DES INPUTS
     const handleInputChange = (e) => {
         const { name, value } = e.target;
         setEventData(prevState => ({
@@ -76,15 +57,6 @@ const EventComponent = () => {
             [name]: value
         }));
     }
-
-    const handleFileChange = (e) => {
-        if (e.target.files[0]) {
-            const file = e.target.files[0];
-            // Créez une URL d'objet pour le fichier sélectionné
-            setImagePreview(URL.createObjectURL(file));
-        }
-    };
-
 
     const handleLinkChange = (e) => {
         const { name, value } = e.target;
@@ -96,7 +68,7 @@ const EventComponent = () => {
             }
         }));
     }
-
+    //FONCTION POUR FORCER LA REINITILISATION DU FORMULAIRE
     const handleShowCreateForm = () => {
         setEventData({
             nomEvent: '',
@@ -104,7 +76,7 @@ const EventComponent = () => {
             dateFin: '',
             jeuEvenement: '',
             description: '',
-            thumbnail: '',
+            thumbnailEvent: '',
             typeTournoi: 'online',
             liens: {
                 inscription: '',
@@ -118,25 +90,41 @@ const EventComponent = () => {
         setShowForm(true);
     };
 
+    //GESTION DES FORMATS DE DATES
+    const formatDate = (dateString) => {
+        const date = new Date(dateString);
+        let month = '' + (date.getMonth() + 1),
+            day = '' + date.getDate(),
+            year = date.getFullYear();
+
+        if (month.length < 2)
+            month = '0' + month;
+        if (day.length < 2)
+            day = '0' + day;
+
+        return [year, month, day].join('-');
+    };
+
     // Fonction pour créer un événement à l'appui d'un bouton
-    const handleCreateEvent = async (eventData) => {
+    const handleCreateEvent = async (newEventData, imageUrl) => {
+        // Si une nouvelle image est uploadée, on utilise son URL, sinon on garde celle du state
+        const eventDataWithImage = imageUrl ? { ...newEventData, thumbnailEvent: imageUrl } : newEventData;
+
         try {
-            const response = await axios.post('/lagapi/evenements', eventData, {
+            const response = await axios.post('/lagapi/evenements', eventDataWithImage, {
                 headers: {
                     'Authorization': `Bearer ${token}`
                 }
             });
             fetchEvents();
             setShowForm(false);
-            console.log('Event created', response);
+            console.log('Event created', response.data);
         } catch (error) {
             console.error("Error creating event:", error);
         }
     };
 
-
-
-    //fonction pour supprimer un evenementr a l'appui de bouton
+    //fonction pour supprimer un evenement a l'appui de bouton
     const handleDeleteEvent = (eventId) => {
         axios.delete(`/lagapi/evenements/${eventId}`, {
             headers: {
@@ -144,7 +132,7 @@ const EventComponent = () => {
             }
         })
             .then(response => {
-                console.log('Événement supprimé', response);
+                console.log('Événement supprimé', response.data);
                 fetchEvents();    // Rafraîchir la liste des événements après la suppression
             })
             .catch(error => {
@@ -152,7 +140,7 @@ const EventComponent = () => {
             });
     }
 
-    //fonction pour modfier un evenement a l'appui de bouon
+    //fonction pour afficher les donnée de l'evenement a modifier
     const handleUpdateEvent = (eventId) => {
         axios.get(`/lagapi/evenements/${eventId}`)
             .then(response => {
@@ -166,34 +154,20 @@ const EventComponent = () => {
             });
     }
 
-    const handleActualUpdate = async (eventId, imageUrl) => {
-        // Préparer les données, y compris l'URL de l'image
-        const updatedEventData = {
-            ...eventData,
-            thumbnail: imageUrl,
-        };
-
-        // On convertit les données en FormData pour pouvoir inclure le fichier si nécessaire
-        const formData = new FormData();
-        for (const key in updatedEventData) {
-            if (key !== 'thumbnail' || imageUrl !== eventData.thumbnail) {
-                formData.append(key, updatedEventData[key]);
-            }
-        }
-        // Pour les objets imbriqués comme `liens`, il faut les convertir en chaîne JSON
-        formData.append('liens', JSON.stringify(updatedEventData.liens));
+    //fonction pour mupdate un evenement
+    const handleActualUpdate = async (eventId, updatedEventData, imageUrl) => {
+        // Si une nouvelle image est uploadée, on utilise son URL, sinon on garde celle du state
+        const eventDataWithImage = imageUrl ? { ...updatedEventData, thumbnailEvent: imageUrl } : updatedEventData;
 
         try {
-            const response = await axios.put(`/lagapi/evenements/${eventId}`, formData, {
+            await axios.put(`/lagapi/evenements/${eventId}`, eventDataWithImage, {
                 headers: {
-                    'Authorization': `Bearer ${token}`,
-                    'Content-Type': 'multipart/form-data'
+                    'Authorization': `Bearer ${token}`
                 }
             });
             fetchEvents();
             setShowForm(false);
             setEditingEventId(null);
-            console.log('Event updated', response);
         } catch (error) {
             console.error('Error updating event:', error);
         }
@@ -202,57 +176,75 @@ const EventComponent = () => {
     const handleSubmit = async (event) => {
         event.preventDefault();
 
-        // Si on modifie et qu'une nouvelle image n'a pas été téléchargée
-        // on envoie les données actuelles
-        if (editingEventId && !eventData.thumbnail.name) {
-            await handleActualUpdate(editingEventId);
-            return;
-        }
-
+        // Préparer les données du formulaire
         const formData = new FormData();
-        if (eventData.thumbnail.name) {
-            formData.append('thumbnail', eventData.thumbnail);
+
+        // Vérifier si eventData.thumbnailEvent est un fichier
+        const isFile = eventData.thumbnailEvent instanceof File;
+
+        // Définir le point de terminaison pour l'upload
+        const uploadEndpoint = `/upload/evenements/${editingEventId}/thumbnailEvent`;
+
+        let imageUrl = eventData.thumbnailEvent;
+        // Si c'est un fichier, l'ajouter au formData
+        if (isFile) {
+            formData.append('image', eventData.thumbnailEvent);
         }
 
-        try {
-            let imageUrl = imagePreview; // Utilisez l'image actuelle par défaut
-            if (eventData.thumbnail.name) {
-                const uploadResponse = await axios.post('/upload', formData, {
+        // S'il y a un nouveau fichier ou si nous sommes en train de créer un événement, procéder à l'upload
+        if (isFile || !editingEventId) {
+            try {
+                // Ajouter la confirmation de remplacement si nécessaire
+                if (editingEventId) {
+                    formData.append('confirmReplace', 'true');
+                }
+
+                // Effectuer la requête d'upload
+                const uploadResponse = await axios.post(uploadEndpoint, formData, {
                     headers: {
-                        'Content-Type': 'multipart/form-data',
-                        'Authorization': `Bearer ${token}`
+                        'Authorization': `Bearer ${token}`,
+                        'Content-Type': 'multipart/form-data'
                     },
                 });
-                imageUrl = uploadResponse.data.imageUrl;
+                imageUrl = uploadResponse.data.imageUrl; // Mettre à jour l'URL de l'image avec la réponse du serveur
+            } catch (uploadError) {
+                console.error('Error uploading file:', uploadError);
+                return; // Sortir en cas d'échec de l'upload
             }
+        }
 
-            await handleCreateEvent({ ...eventData, thumbnail: imageUrl });
-        } catch (error) {
-            console.error('Error submitting event:', error);
+        // Préparer l'objet eventData avec l'URL de l'image mise à jour si nécessaire
+        const eventDataWithImage = { ...eventData, thumbnailEvent: imageUrl };
+
+        // Si il y'a un eventId, cela signifie que nous mettons à jour un événement
+        if (editingEventId) {
+            await handleActualUpdate(editingEventId, eventDataWithImage);
+        } else {
+            await handleCreateEvent(eventDataWithImage);
         }
     };
 
-
-    //fonction pour rendre la date au format jj/mm/aaaa
-    function formatDate(dateString) {
-        const [year, month, day] = dateString.split('T')[0].split('-');
-        return `${day}/${month}/${year}`;
-    }
-
+    const imagePreview = eventData.thumbnailEvent instanceof File ? URL.createObjectURL(eventData.thumbnailEvent) : eventData.thumbnailEvent;
 
     return (
         <div className="eventContainer">
             {showForm ? (
                 <form className="backForm" onSubmit={handleSubmit}>
                     <input className='backFormInput' name="nomEvent" value={eventData?.nomEvent || ''} onChange={handleInputChange} placeholder="Nom de l'événement" />
-                    <input className='backFormInput' type="date" name="dateDebut" value={eventData?.dateDebut || ''} onChange={handleInputChange} />
-                    <input className='backFormInput' type="date" name="dateFin" value={eventData?.dateFin || ''} onChange={handleInputChange} />
+                    <input className='backFormInput' type="date" name="dateDebut" value={eventData.dateDebut ? formatDate(eventData.dateDebut) : ''} onChange={handleInputChange} />
+                    <input className='backFormInput' type="date" name="dateFin" value={eventData.dateFin ? formatDate(eventData.dateFin) : ''} onChange={handleInputChange} />
                     <input className='backFormInput' name="jeuEvenement" value={eventData?.jeuEvenement || ''} onChange={handleInputChange} placeholder="Jeu de l'événement" />
                     <textarea className='backFormInput' name="description" value={eventData?.description || ''} onChange={handleInputChange} placeholder="Description" />
-                    {imagePreview && (
-                        <img src={imagePreview} alt="Aperçu" style={{ width: '100px', height: '100px' }} />
+                    {editingEventId ? (
+                        <>
+                            {imagePreview && (
+                                <img src={imagePreview} alt="Aperçu" style={{ width: '100px', height: '100px' }} />
+                            )}
+                            <input className='backFormInput' type="file" name="thumbnailEvent" onChange={(e) => setEventData({ ...eventData, thumbnailEvent: e.target.files[0] })} placeholder="URL thumbnailEvent" />
+                        </>
+                    ) : (
+                        <p>Veuillez créer l'événement sans image, puis modifiez le pour pouvoir en mettre une.</p>
                     )}
-                    <input className='backFormInput' type="file" name="thumbnail" onChange={handleFileChange} placeholder="URL Thumbnail" />
                     <select className='backFormInput' name="typeTournoi" value={eventData?.typeTournoi || ''} onChange={handleInputChange}>
                         <option value="online">Online</option>
                         <option value="lan">LAN</option>

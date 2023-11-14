@@ -21,9 +21,25 @@ const JoueurComponent = () => {
 
     const fetchJoueurs = () => {
         axios.get('/lagapi/joueurs')
-            .then(response => {
+            .then(async response => {
                 if (response.data && Array.isArray(response.data.joueurs)) {
-                    setJoueurs(response.data.joueurs);
+                    const joueursAvecNomJeu = await Promise.all(response.data.joueurs.map(async joueur => {
+                        if (joueur.equipe) {
+                            // Récupérer les détails de l'équipe
+                            const equipeResponse = await axios.get(`/lagapi/equipes/id/${joueur.equipe}`);
+                            const equipe = equipeResponse.data;
+
+                            if (equipe.jeu) {
+                                // Récupérer les détails du jeu
+                                const jeuResponse = await axios.get(`/lagapi/jeux/${equipe.jeu}`);
+                                const jeu = jeuResponse.data;
+                                return { ...joueur, nomJeu: jeu.nomJeu };
+                            }
+                        }
+                        return joueur;
+                    }));
+
+                    setJoueurs(joueursAvecNomJeu);
                 } else {
                     console.error("La réponse du serveur n'est pas un tableau:", response.data);
                 }
@@ -42,10 +58,10 @@ const JoueurComponent = () => {
             insta: '',
             twitch: '',
             youtube: '',
-            twitter: ''
+            twitter: '',
         },
-        photoJoueur: ''
-        // Ajoutez ici d'autres champs si nécessaire
+        photoJoueur: '',
+        equipe: '',
     });
 
     const handleInputChange = (e) => {
@@ -125,6 +141,21 @@ const JoueurComponent = () => {
             });
     }
 
+    //GESTION DES FORMATS DE DATES
+    const formatDate = (dateString) => {
+        const date = new Date(dateString);
+        let month = '' + (date.getMonth() + 1),
+            day = '' + date.getDate(),
+            year = date.getFullYear();
+
+        if (month.length < 2)
+            month = '0' + month;
+        if (day.length < 2)
+            day = '0' + day;
+
+        return [year, month, day].join('-');
+    };
+
     return (
         <div className="joueurContainer">
             {showForm ? (
@@ -132,7 +163,7 @@ const JoueurComponent = () => {
                     <input className='backFormInput' name="nomJoueur" value={joueurData?.nomJoueur || ''} onChange={handleInputChange} placeholder="Nom du joueur" />
                     <input className='backFormInput' name="prenomJoueur" value={joueurData?.prenomJoueur || ''} onChange={handleInputChange} placeholder="Prénom du joueur" />
                     <input className='backFormInput' name="pseudoJoueur" value={joueurData?.pseudoJoueur || ''} onChange={handleInputChange} placeholder="Pseudo du joueur" />
-                    <input className='backFormInput' type="date" name="dateDeNaissanceJoueur" value={joueurData?.dateDeNaissanceJoueur || ''} onChange={handleInputChange} placeholder="Date de naissance" />
+                    <input className='backFormInput' type="date" name="dateDeNaissanceJoueur" value={joueurData?.dateDeNaissanceJoueur ? formatDate(joueurData.dateDeNaissanceJoueur) : ''} onChange={handleInputChange} placeholder="Date de naissance" />
 
                     {/* Liens réseaux sociaux */}
                     <input className='backFormInput' name="liensReseauxJoueur.insta" value={joueurData?.liensReseauxJoueur.insta || ''} onChange={handleInputChange} placeholder="Instagram" />
@@ -173,7 +204,7 @@ const JoueurComponent = () => {
                                 <tr key={index}>
                                     <td>{joueur.nomJoueur}</td>
                                     <td>{joueur.pseudoJoueur}</td>
-                                    <td>{joueur.equipe}</td>
+                                    <td>{joueur.nomJeu || 'Non assigné'}</td>
                                     <td>
                                         <button onClick={() => handleUpdateJoueur(joueur._id)}><img src={updateBtn} alt='update Button' /></button>
                                         <button onClick={() => handleDeleteJoueur(joueur._id)}><img src={deleteBtn} alt='delete button' /></button>

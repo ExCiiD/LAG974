@@ -25,6 +25,19 @@ equipeController.findAll = async (req, res) => {
     }
 };
 
+// Fonction pour récupérer une équipe spécifique par son ID
+equipeController.findById = async (req, res) => {
+    try {
+        const equipe = await Equipe.findById(req.params.id).populate('roster.refJoueur');
+        if (!equipe) {
+            return res.status(404).json({ message: "Équipe non trouvée avec cet ID." });
+        }
+        res.status(200).json(equipe);
+    } catch (error) {
+        res.status(500).json({ message: "Erreur lors de la récupération de l'équipe.", error });
+    }
+};
+
 // Fonction pour récupérer une équipe spécifique par Game ID (ID du Jeu)
 equipeController.findByJeuId = async (req, res) => {
     try {
@@ -73,22 +86,24 @@ equipeController.addJoueur = async (req, res) => {
         // Récupérer les IDs depuis la route
         const { idequipe, idjoueur } = req.params;
 
-        //verifie si l'id equipe est bon (si l'equipe existe)
-        const equipe = await Equipe.findById(req.params.idequipe);
-
+        // Vérifie si l'équipe existe
+        const equipe = await Equipe.findById(idequipe);
         if (!equipe) {
             return res.status(404).json({ message: 'Équipe non trouvée' });
         }
-        //verifie si l'id joueur est bon (si le joueur existe)
-        const joueur = await Joueur.findById(req.params.idjoueur);
 
+        // Vérifie si le joueur existe
+        const joueur = await Joueur.findById(idjoueur);
         if (!joueur) {
-            return res.status(404).json({ message: 'joueur non trouvée' });
+            return res.status(404).json({ message: 'Joueur non trouvé' });
         }
 
-        // Ajouter le nouveau joueur
-        equipe.roster.push({ refJoueur: idjoueur });
+        // Ajouter l'ID de l'équipe au joueur
+        joueur.equipe = idequipe;
+        await joueur.save();
 
+        // Ajouter le joueur au roster de l'équipe
+        equipe.roster.push({ refJoueur: idjoueur });
         await equipe.save();
 
         res.status(201).json({ message: 'Joueur ajouté avec succès.', equipe });
@@ -96,6 +111,7 @@ equipeController.addJoueur = async (req, res) => {
         res.status(500).json({ message: error.message });
     }
 };
+
 
 // ENLEVER UN JOUEUR
 equipeController.removeJoueur = async (req, res) => {
@@ -111,10 +127,9 @@ equipeController.removeJoueur = async (req, res) => {
         }
 
         // Vérifie si l'id joueur est valide (si le joueur existe)
-        // même s'il n'est pas déjà dans l'équipe.
-        const joueurExists = await Joueur.findById(idjoueur);
+        const joueur = await Joueur.findById(idjoueur);
 
-        if (!joueurExists) {
+        if (!joueur) {
             return res.status(404).json({ message: 'Joueur non trouvé' });
         }
 
@@ -125,11 +140,15 @@ equipeController.removeJoueur = async (req, res) => {
             return res.status(404).json({ message: 'Joueur non trouvé dans l\'équipe' });
         }
 
-        // Enlever le joueur
+        // Enlever le joueur de l'équipe
         equipe.roster.splice(index, 1);
 
         // Sauvegarder les changements dans l'équipe
         await equipe.save();
+
+        // Mettre à jour l'attribut 'equipe' du joueur
+        joueur.equipe = null;
+        await joueur.save();
 
         res.status(200).json({ message: 'Joueur retiré avec succès.', equipe });
     } catch (error) {

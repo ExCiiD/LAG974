@@ -9,11 +9,14 @@ import deleteBtn from '../images/deleteBtn.png';
 const PartenaireComponent = () => {
     const [partenaires, setPartenaires] = useState([]);
     const [showForm, setShowForm] = useState(false);
+    const [editingPartenaire, setEditingPartenaire] = useState(null);
     const [partenaireData, setPartenaireData] = useState({
         nomPartenaire: '',
         logoPartenaire: '',
         lienSitePartenaire: '',
     });
+
+    const token = localStorage.getItem('token');
 
     const fetchPartenaires = useCallback(() => {
         axios.get('/lagapi/partenaires')
@@ -41,36 +44,78 @@ const PartenaireComponent = () => {
         }));
     };
 
-    const handleCreatePartenaire = useCallback(() => {
-        axios.post('/lagapi/partenaires', partenaireData)
-            .then(() => {
-                fetchPartenaires();
-                setShowForm(false);
-            })
-            .catch(error => {
-                console.error("Erreur lors de la création du partenaire:", error);
-            });
-    }, [partenaireData, fetchPartenaires]);
-
     const handleDeletePartenaire = useCallback((id) => {
-        axios.delete(`/lagapi/partenaires/${id}`)
+        axios.delete(`/lagapi/partenaires/${id}`, {
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        })
             .then(() => {
                 fetchPartenaires();
             })
             .catch(error => {
                 console.error('Erreur lors de la suppression', error);
             });
-    }, [fetchPartenaires]);
+    }, [fetchPartenaires, token]);
 
-    const handleUpdatePartenaire = useCallback((id, partenaireToUpdate) => {
-        axios.put(`/lagapi/partenaires/${id}`, partenaireToUpdate)
-            .then(() => {
-                fetchPartenaires();
-            })
-            .catch(error => {
-                console.error('Erreur lors de la mise à jour', error);
+    const handleUpdatePartenaire = useCallback((partenaire) => {
+        setEditingPartenaire(partenaire);
+        setShowForm(true);
+    }, []);
+
+    useEffect(() => {
+        if (editingPartenaire) {
+            setPartenaireData({
+                nomPartenaire: editingPartenaire.nomPartenaire,
+                logoPartenaire: editingPartenaire.logoPartenaire,
+                lienSitePartenaire: editingPartenaire.lienSitePartenaire,
             });
-    }, [fetchPartenaires]);
+        } else {
+            setPartenaireData({ nomPartenaire: '', logoPartenaire: '', lienSitePartenaire: '' });
+        }
+    }, [editingPartenaire]);
+
+    const handleSubmit = () => {
+        if (editingPartenaire) {
+            // Update logic
+            axios.put(`/lagapi/partenaires/${editingPartenaire._id}`, partenaireData, {
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            })
+                .then(() => {
+                    // Refresh the list of partenaires to reflect the update
+                    fetchPartenaires();
+                    // Reset the form and close it
+                    setPartenaireData({ nomPartenaire: '', logoPartenaire: '', lienSitePartenaire: '' });
+                    setEditingPartenaire(null);
+                    setShowForm(false);
+                })
+                .catch(error => {
+                    console.error("Erreur lors de la mise à jour du partenaire:", error);
+                    // Optionally, handle error states here (like displaying a message to the user)
+                });
+        } else {
+            // Create logic
+            axios.post('/lagapi/partenaires', partenaireData, {
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            })
+                .then(() => {
+                    // Refresh the list of partenaires to include the new one
+                    fetchPartenaires();
+                    // Reset the form
+                    setPartenaireData({ nomPartenaire: '', logoPartenaire: '', lienSitePartenaire: '' });
+                    setShowForm(false);
+                })
+                .catch(error => {
+                    console.error("Erreur lors de la création du partenaire:", error);
+                    // Optionally, handle error states here
+                });
+        }
+    };
+
 
     return (
         <div className="partenaireContainer">
@@ -100,7 +145,10 @@ const PartenaireComponent = () => {
                         placeholder="Lien vers le site du partenaire"
                     />
                     <div className='backFormBtnContainer'>
-                        <button className='backFormBtn' onClick={handleCreatePartenaire}>Créer</button>
+                        <button className='backFormBtn' onClick={handleSubmit}>
+                            {editingPartenaire ? 'Mettre à jour' : 'Créer'}
+                        </button>
+
                         <button className='backFormBtn' onClick={() => setShowForm(false)}>Annuler</button>
                     </div>
                 </div>
@@ -118,8 +166,8 @@ const PartenaireComponent = () => {
                                 <tr key={index}>
                                     <td colSpan="2">{partenaire.nomPartenaire}</td>
                                     <td className="actionButtons">
-                                        <button onClick={() => handleUpdatePartenaire(partenaire.id, partenaire)}><img src={updateBtn} alt='update Button' /></button>
-                                        <button onClick={() => handleDeletePartenaire(partenaire.id)}><img src={deleteBtn} alt='delete button' /></button>
+                                        <button onClick={() => handleUpdatePartenaire(partenaire)}><img src={updateBtn} alt='update Button' /></button>
+                                        <button onClick={() => handleDeletePartenaire(partenaire._id)}><img src={deleteBtn} alt='delete button' /></button>
                                     </td>
                                 </tr>
                             ))}

@@ -50,8 +50,6 @@ evenementController.updateEvenement = async (req, res) => {
         const id = req.params.id;
         const data = req.body;
 
-        // Vous pouvez ajouter des validations supplémentaires ici avant de mettre à jour un événement
-
         const updatedEvenement = await Evenement.findByIdAndUpdate(id, data, { new: true });
 
         if (!updatedEvenement) {

@@ -1,44 +1,30 @@
 import mongoose from 'mongoose';
-
 import { Jeu } from "../models/jeu.js";
 import { Equipe } from '../models/equipe.js';
 import { Historique } from '../models/historique.js';
 
-import multer from "multer";
+export const jeuController = {};
 
-/* // Configuration de multer pour spécifier où stocker les fichiers téléchargés
-const storage = multer.diskStorage({
-    destination: (req, file, cb) => {
-        cb(null, './uploads/'); // Le dossier où stocker les fichiers
-    },
-    filename: (req, file, cb) => {
-        cb(null, Date.now() + path.extname(file.originalname)); // Renommez le fichier pour éviter les collisions
-    },
-});
-
-const upload = multer({ storage });
- */
-
-// Fonction pour créer un nouveau jeu
-export const addJeu = async (req, res) => {
-    let session = null;
-
+// Créer un nouveau jeu
+jeuController.addJeu = async (req, res) => {
     try {
-        session = await mongoose.startSession();
-        session.startTransaction();
+        let data = req.body;
+        if (req.files) {
+            const uploadPath = 'public/uploads'; // Chemin utilisé par express.static
+            if (req.files.iconeJeu) {
+                data.iconeJeu = req.files.iconeJeu[0].path.replace(new RegExp(`^${uploadPath}`), '');
+            }
+            if (req.files.thumbnailJeu) {
+                data.thumbnailJeu = req.files.thumbnailJeu[0].path.replace(new RegExp(`^${uploadPath}`), '');
+            }
+        }
 
-        const { nomJeu, iconeJeu, thumbnail } = req.body;
-
-        const jeu = new Jeu({
-            nomJeu,
-            iconeJeu,
-            thumbnail,
-        });
+        const jeu = new Jeu(data);
         await jeu.save();
 
         // Créer une équipe avec la référence au jeu nouvellement créé
         const equipe = new Equipe({
-            jeu: jeu._id, 
+            jeu: jeu._id,
         });
         await equipe.save();
 
@@ -52,24 +38,14 @@ export const addJeu = async (req, res) => {
         equipe.historique = historique._id;
         await equipe.save();
 
-        await session.commitTransaction();
-        session.endSession();
-
-        res.status(201).json({ message: 'jeu crée avec succès !', jeu, equipe });
+        res.status(201).json({ success: true, message: 'Jeu créé avec succès !', jeu });
     } catch (error) {
-        console.error(error);
-
-        if (session) {
-            await session.abortTransaction();
-            session.endSession();
-        }
-
-        res.status(500).json({ error: 'Une erreur est survenue lors de la création du jeu et de l\'équipe.' });
+        res.status(500).json({ success: false, message: 'Erreur lors de la création du jeu', error: error.message });
     }
 };
 
-// Fonction pour récupérer tous les jeux
-export const getJeux = async (req, res) => {
+// Récupérer tous les jeux
+jeuController.getJeux = async (req, res) => {
     try {
         const jeux = await Jeu.find();
         res.status(200).json({ success: true, jeux });
@@ -79,11 +55,10 @@ export const getJeux = async (req, res) => {
     }
 };
 
-// Fonction pour récupérer un jeu par son ID
-export const getJeuByID = async (req, res) => {
-    const { id } = req.params;
-
+// Récupérer un jeu par son ID
+jeuController.getJeuByID = async (req, res) => {
     try {
+        const id = req.params;
         const jeu = await Jeu.findById(id);
 
         if (!jeu) {
@@ -97,39 +72,41 @@ export const getJeuByID = async (req, res) => {
     }
 };
 
-// Fonction pour mettre à jour un jeu par son ID
-export const updateJeu = async (req, res) => {
-    const { id } = req.params;
-    const { nomJeu, iconeJeu, thumbnail } = req.body;
-
+// Mettre à jour un jeu par son ID
+jeuController.updateJeu = async (req, res) => {
     try {
-        const jeu = await Jeu.findByIdAndUpdate(id, {
-            nomJeu,
-            iconeJeu,
-            thumbnail,
-        }, { new: true });
+        const id = req.params.id;
+        const data = req.body;
 
-        if (!jeu) {
+        const updatedJeu = await Jeu.findByIdAndUpdate(id, data, { new: true });
+
+        if (!updatedJeu) {
             return res.status(404).json({ message: 'Jeu non trouvé.' });
         }
 
-        res.status(200).json({ message: 'jeu mis a jour !', jeu });
+        res.status(200).json({ message: 'jeu mis a jour !', updatedJeu });
     } catch (error) {
         console.error(error);
         res.status(500).json({ error: 'Une erreur est survenue lors de la mise à jour du jeu.' });
     }
 };
 
-// Fonction pour supprimer un jeu par son ID
-export const deleteJeu = async (req, res) => {
-    const { id } = req.params;
-
+// Supprimer un jeu par son ID
+jeuController.deleteJeu = async (req, res) => {
     try {
+        const id = req.params.id;
         const jeu = await Jeu.findByIdAndRemove(id);
 
         if (!jeu) {
             return res.status(404).json({ message: 'Jeu non trouvé.' });
         }
+
+        // Suppression des équipes associées
+        await Equipe.deleteMany({ jeu: id });
+
+        // Suppression de l'historique associé
+        await Historique.deleteMany({ refJeu: id });
+
 
         res.status(204).json({ message: 'jeu supprimé !' }); // Réponse sans contenu pour indiquer la suppression réussie
     } catch (error) {

@@ -49,7 +49,7 @@ const joueurSchema = new mongoose.Schema({
 
 joueurSchema.pre('find', function (next) {
     // 'this' est l'instance de la requête
-    this.populate({ path: 'equipe.jeu', select: 'nomJeu', }); // spécifiez le champ à peupler
+    this.populate({ path: 'equipe.jeu', select: 'nomJeu', }); 
     next();
 });
 

@@ -65,7 +65,7 @@ function MainRoutes() {
 
   function isTokenExpired(token) {
     const decoded = decodeJWT(token);
-    if (!decoded) return true; // Consider the token as expired if we failed to decode it
+    if (!decoded) return true; // si le token n'a pas été decodé, le considéré comme expiré
 
     const currentTimestamp = Math.floor(Date.now() / 1000);
     return decoded.exp < currentTimestamp;

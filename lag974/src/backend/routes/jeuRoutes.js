@@ -1,35 +1,20 @@
 import express from 'express';
-import { addJeu, getJeux, getJeuByID, updateJeu, deleteJeu } from '../controllers/jeuController.js';
+import { jeuController } from '../controllers/jeuController.js';
 import { requireRole } from '../middleware/permissionsCheck.js';
 
 export const jeuRouter = new express.Router();
 
 //Route pour creer un nouveau jeu
-jeuRouter.post('/jeux', requireRole(['mainAdmin', 'staff']), async (req, res) => {
-    //appel du controller
-    addJeu(req, res);
-});
+jeuRouter.post('/jeux', requireRole(['mainAdmin', 'staff']), jeuController.addJeu);
 
 //Route pour recuprer tous les jeux
-jeuRouter.get('/jeux', async (req, res) => {
-    //appel du controller
-    getJeux(req, res);
-});
+jeuRouter.get('/jeux', jeuController.getJeux);
 
 //Route pour recuprer un jeu par id
-jeuRouter.get('/jeux/:id', async (req, res) => {
-    //appel du controller
-    getJeuByID(req, res);
-});
+jeuRouter.get('/jeux/:id', requireRole(['mainAdmin', 'staff']), jeuController.getJeuByID);
 
 //Route pour mettre a jour un jeu par id
-jeuRouter.put('/jeux/:id', requireRole(['mainAdmin', 'staff']), async (req, res) => {
-    //appel du controller
-    updateJeu(req, res);
-});
+jeuRouter.put('/jeux/:id', requireRole(['mainAdmin', 'staff']), jeuController.updateJeu);
 
 //Route pour supprimer un jeu par id
-jeuRouter.delete('/jeux/:id', requireRole(['mainAdmin', 'staff']), async (req, res) => {
-    //appel du controller
-    deleteJeu(req, res);
-});
+jeuRouter.delete('/jeux/:id', requireRole(['mainAdmin', 'staff']), jeuController.deleteJeu);

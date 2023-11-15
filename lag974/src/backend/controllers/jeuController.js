@@ -58,7 +58,7 @@ jeuController.getJeux = async (req, res) => {
 // Récupérer un jeu par son ID
 jeuController.getJeuByID = async (req, res) => {
     try {
-        const id = req.params;
+        const { id } = req.params;
         const jeu = await Jeu.findById(id);
 
         if (!jeu) {

@@ -12,6 +12,20 @@ const JoueurComponent = () => {
     const [joueurs, setJoueurs] = useState([]);
     const [showForm, setShowForm] = useState(false);
     const [editingJoueur, setEditingJoueur] = useState(null);
+    const [joueurData, setJoueurData] = useState({
+        nomJoueur: '',
+        prenomJoueur: '',
+        pseudoJoueur: '',
+        dateDeNaissanceJoueur: '',
+        liensReseauxJoueur: {
+            insta: '',
+            twitch: '',
+            youtube: '',
+            twitter: '',
+        },
+        photoJoueur: '',
+        equipe: '',
+    });
 
     const token = localStorage.getItem('token'); // Récupérer le token du local storage
 
@@ -49,20 +63,6 @@ const JoueurComponent = () => {
             });
     };
 
-    const [joueurData, setJoueurData] = useState({
-        nomJoueur: '',
-        prenomJoueur: '',
-        pseudoJoueur: '',
-        dateDeNaissanceJoueur: '',
-        liensReseauxJoueur: {
-            insta: '',
-            twitch: '',
-            youtube: '',
-            twitter: '',
-        },
-        photoJoueur: '',
-        equipe: '',
-    });
 
     const handleInputChange = (e) => {
         const { name, value } = e.target;
@@ -99,6 +99,24 @@ const JoueurComponent = () => {
             });
     };
 
+    const handleCreateButtonClick = () => {
+        setJoueurData({
+            nomJoueur: '',
+            prenomJoueur: '',
+            pseudoJoueur: '',
+            dateDeNaissanceJoueur: '',
+            liensReseauxJoueur: {
+                insta: '',
+                twitch: '',
+                youtube: '',
+                twitter: '',
+            },
+            photoJoueur: '',
+        });
+        setEditingJoueur(null);
+        setShowForm(true);
+    };
+
     const handleUpdateJoueur = (id) => {
         axios.get(`/lagapi/joueurs/${id}`)
             .then(response => {
@@ -111,21 +129,43 @@ const JoueurComponent = () => {
             });
     }
 
-    const handleActualUpdate = (id) => {
-        axios.put(`/lagapi/joueurs/${id}`, joueurData, {
-            headers: {
-                'Authorization': `Bearer ${token}`
+    const handleActualUpdate = async (joueurId) => {
+        let updatedJoueurData = { ...joueurData };
+
+        // Vérifiez si un nouveau fichier a été sélectionné pour l'upload
+        if (joueurData.photoJoueur instanceof File) {
+            const formData = new FormData();
+            formData.append('image', joueurData.photoJoueur);
+
+            try {
+                const uploadResponse = await axios.post(`/upload/joueurs/${joueurId}/photoJoueur`, formData, {
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                        'Content-Type': 'multipart/form-data'
+                    }
+                });
+                // Mettez à jour l'URL de l'image dans les données du joueur
+                updatedJoueurData.photoJoueur = uploadResponse.data.imageUrl;
+            } catch (error) {
+                console.error('Erreur lors de l\'upload de l\'image:', error);
+                return;
             }
-        })
-            .then(response => {
-                fetchJoueurs();
-                setShowForm(false);
-                setEditingJoueur(null); // Réinitialisez l'état d'édition
-            })
-            .catch(error => {
-                console.error('Erreur lors de la mise à jour du joueur:', error);
+        }
+
+        // Mettez à jour les données du joueur
+        try {
+            await axios.put(`/lagapi/joueurs/${joueurId}`, updatedJoueurData, {
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
             });
-    }
+            fetchJoueurs();
+            setShowForm(false);
+            setEditingJoueur(null);
+        } catch (error) {
+            console.error('Erreur lors de la mise à jour du joueur:', error);
+        }
+    };
 
     const handleDeleteJoueur = (id) => {
         axios.delete(`/lagapi/joueurs/${id}`, {
@@ -156,6 +196,8 @@ const JoueurComponent = () => {
         return [year, month, day].join('-');
     };
 
+    const imagePreview = joueurData.photoJoueur instanceof File ? URL.createObjectURL(joueurData.photoJoueur) : joueurData.photoJoueur;
+
     return (
         <div className="joueurContainer">
             {showForm ? (
@@ -171,19 +213,25 @@ const JoueurComponent = () => {
                     <input className='backFormInput' name="liensReseauxJoueur.youtube" value={joueurData?.liensReseauxJoueur.youtube || ''} onChange={handleInputChange} placeholder="YouTube" />
                     <input className='backFormInput' name="liensReseauxJoueur.twitter" value={joueurData?.liensReseauxJoueur.twitter || ''} onChange={handleInputChange} placeholder="Twitter" />
 
-                    {/* Photo du joueur */}
-                    <input className='backFormInput' name="photoJoueur" value={joueurData?.photoJoueur || ''} onChange={handleInputChange} placeholder="URL de la photo" />
-
+                    {editingJoueur ? (
+                        <>
+                            {imagePreview && (
+                                <img src={imagePreview} alt="Aperçu" style={{ width: '100px', height: '100px' }} />
+                            )}
+                            <input className='backFormInput' type="file" name="photoJoueur" onChange={(e) => setJoueurData({ ...joueurData, photoJoueur: e.target.files[0] })} placeholder="URL de la photo" />
+                        </>
+                    ) : (
+                        <p>Veuillez créer l'événement sans image, puis modifiez le pour pouvoir en mettre une.</p>
+                    )}
                     {/* Equipe */}
-                    <input className='backFormInput' name="equipe" value={joueurData?.equipe || ''} onChange={handleInputChange} placeholder="ID de l'équipe" />
+                    {!editingJoueur && (
+                        <input className='backFormInput' name="equipe" value={joueurData?.equipe || ''} onChange={handleInputChange} placeholder="ID de l'équipe" />
+                    )}
                     <div className='backFormBtnContainer'>
                         <button className='backFormBtn' onClick={editingJoueur ? () => handleActualUpdate(editingJoueur) : handleCreateJoueur}>
                             {editingJoueur ? 'Mettre à jour' : 'Créer'}
                         </button>
-                        <button className='backFormBtn' onClick={() => {
-                            setShowForm(false);
-                            setEditingJoueur(null);
-                        }}>
+                        <button className='backFormBtn' onClick={() => { setShowForm(false); setEditingJoueur(null); }}>
                             Annuler
                         </button>
                     </div>
@@ -196,7 +244,7 @@ const JoueurComponent = () => {
                                 <th>NOM</th>
                                 <th>PSEUDO</th>
                                 <th>EQUIPE</th>
-                                <th><button onClick={() => setShowForm(true)}><img src={createBtn} alt='create Button' /></button></th>
+                                    <th><button onClick={handleCreateButtonClick}><img src={createBtn} alt='create Button' /></button></th>
                             </tr>
                         </thead>
                         <tbody>

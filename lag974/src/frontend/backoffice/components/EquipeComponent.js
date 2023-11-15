@@ -75,25 +75,64 @@ const EquipeComponent = () => {
             });
     };
 
-    const handleUpdateGame = (gameData, gameId) => {
-        axios.put(`/lagapi/jeux/${gameId}`, gameData, {
-            headers: {
-                'Authorization': `Bearer ${token}`
+    const handleUpdateGame = async (gameData, gameId) => {
+        let updatedGameData = { ...gameData };
+
+        // Vérifiez si iconeJeu est un fichier
+        if (gameData.iconeJeu instanceof File) {
+            const formData = new FormData();
+            formData.append('image', gameData.iconeJeu);
+
+            try {
+                const uploadResponse = await axios.post(`/upload/jeux/${gameId}/iconeJeu`, formData, {
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                        'Content-Type': 'multipart/form-data'
+                    }
+                });
+                updatedGameData.iconeJeu = uploadResponse.data.imageUrl;
+            } catch (error) {
+                console.error('Erreur lors de l\'upload de l\'icône:', error);
+                return;
             }
-        })
-            .then(response => {
-                if (response.data) {
-                    // Update the local state to reflect the changes
-                    setGames(prevGames => prevGames.map(game =>
-                        game._id === gameId ? { ...game, ...response.data } : game
-                    ));
-                } else {
-                    console.error("La réponse du serveur n'est pas ce qui est attendu:", response.data);
+        }
+
+        // Vérifiez si thumbnailJeu est un fichier
+        if (gameData.thumbnailJeu instanceof File) {
+            const formData = new FormData();
+            formData.append('image', gameData.thumbnailJeu);
+
+            try {
+                const uploadResponse = await axios.post(`/upload/jeux/${gameId}/thumbnailJeu`, formData, {
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                        'Content-Type': 'multipart/form-data'
+                    }
+                });
+                updatedGameData.thumbnailJeu = uploadResponse.data.imageUrl;
+            } catch (error) {
+                console.error('Erreur lors de l\'upload de la vignette:', error);
+                return;
+            }
+        }
+
+        // Mise à jour des données du jeu
+        try {
+            const response = await axios.put(`/lagapi/jeux/${gameId}`, updatedGameData, {
+                headers: {
+                    'Authorization': `Bearer ${token}`
                 }
-            })
-            .catch(error => {
-                console.error("Erreur lors de la mise à jour du jeu:", error);
             });
+            if (response.data) {
+                setGames(prevGames => prevGames.map(game =>
+                    game._id === gameId ? { ...game, ...response.data } : game
+                ));
+            } else {
+                console.error("La réponse du serveur n'est pas ce qui est attendu:", response.data);
+            }
+        } catch (error) {
+            console.error("Erreur lors de la mise à jour du jeu:", error);
+        }
     };
 
     //FONCTIONS POUR GERER L UPDATE

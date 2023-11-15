@@ -43,7 +43,7 @@ uploadRouter.post('/:model/:id/:imageField', requireRole(['mainAdmin', 'staff'])
 
     const validImageFields = {
         'evenements': ['thumbnailEvent'],
-        'jeux': ['thumbnailJeu', 'iconJeu'],
+        'jeux': ['thumbnailJeu', 'iconeJeu'],
         'partenaires': ['logoPartenaire'],
         'joueurs': ['photoJoueur'],
     };

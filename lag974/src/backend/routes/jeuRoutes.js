@@ -11,7 +11,7 @@ jeuRouter.post('/jeux', requireRole(['mainAdmin', 'staff']), jeuController.addJe
 jeuRouter.get('/jeux', jeuController.getJeux);
 
 //Route pour recuprer un jeu par id
-jeuRouter.get('/jeux/:id', requireRole(['mainAdmin', 'staff']), jeuController.getJeuByID);
+jeuRouter.get('/jeux/:id', jeuController.getJeuByID);
 
 //Route pour mettre a jour un jeu par id
 jeuRouter.put('/jeux/:id', requireRole(['mainAdmin', 'staff']), jeuController.updateJeu);

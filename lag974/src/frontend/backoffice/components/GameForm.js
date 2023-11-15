@@ -6,6 +6,8 @@ export const GameForm = ({ onAdd, onUpdate, onCancel, initialData = {}, isUpdate
         iconeJeu: '',
         thumbnailJeu: ''
     });
+    const [iconePreview, setIconePreview] = useState('');
+    const [thumbnailPreview, setThumbnailPreview] = useState('');
 
     useEffect(() => {
         if (isUpdate) {
@@ -14,8 +16,24 @@ export const GameForm = ({ onAdd, onUpdate, onCancel, initialData = {}, isUpdate
                 iconeJeu: initialData.iconeJeu || '',
                 thumbnailJeu: initialData.thumbnailJeu || ''
             });
+            // Mettre à jour les prévisualisations
+            setIconePreview(initialData.iconeJeu || '');
+            setThumbnailPreview(initialData.thumbnailJeu || '');
         }
     }, [initialData, isUpdate]);
+
+    const handleFileChange = (e, type) => {
+        const file = e.target.files[0];
+        if (file) {
+            setFormData({ ...formData, [type]: file });
+            const previewUrl = URL.createObjectURL(file);
+            if (type === 'iconeJeu') {
+                setIconePreview(previewUrl);
+            } else if (type === 'thumbnailJeu') {
+                setThumbnailPreview(previewUrl);
+            }
+        }
+    };
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -25,6 +43,8 @@ export const GameForm = ({ onAdd, onUpdate, onCancel, initialData = {}, isUpdate
             onAdd(formData);
         }
         setFormData({ nomJeu: '', iconeJeu: '', thumbnailJeu: '' });
+        setIconePreview('');
+        setThumbnailPreview('');
     };
 
     return (
@@ -35,18 +55,26 @@ export const GameForm = ({ onAdd, onUpdate, onCancel, initialData = {}, isUpdate
                 onChange={e => setFormData({ ...formData, nomJeu: e.target.value })}
                 placeholder="Nom du jeu"
             />
-            <input
-                className='backFormInput'
-                value={formData.iconeJeu}
-                onChange={e => setFormData({ ...formData, iconeJeu: e.target.value })}
-                placeholder="URL de l'icône"
-            />
-            <input
-                className='backFormInput'
-                value={formData.thumbnailJeu}
-                onChange={e => setFormData({ ...formData, thumbnailJeu: e.target.value })}
-                placeholder="URL de la vignette"
-            />
+            {isUpdate && (
+                <>
+                    {iconePreview && <img className="previewImg" src={iconePreview} alt="Aperçu de l'icône" />}
+                    <span>icone pour le backoffice</span>
+                    <input
+                        className='backFormInput'
+                        type="file"
+                        onChange={(e) => handleFileChange(e, 'iconeJeu')}
+                        placeholder="Choisir une icône"
+                    />
+                    {thumbnailPreview && <img className="previewImg" src={thumbnailPreview} alt="Aperçu de la vignette" />}
+                    <span>thumbnail pour le front office</span>
+                    <input
+                        className='backFormInput'
+                        type="file"
+                        onChange={(e) => handleFileChange(e, 'thumbnailJeu')}
+                        placeholder="Choisir une vignette"
+                    />
+                </>
+            )}
             <button className='backFormBtn' type="submit">
                 {isUpdate ? 'Mettre à jour le jeu' : 'Créer le jeu'}
             </button>

@@ -39,11 +39,24 @@ const AdminComponent = () => {
     }, [fetchAdmins]);
 
 
-    const [adminData, setAdminData] = useState({
+
+    const initialAdminData = {
         username: '',
         email: '',
         role: '',
-    });
+    };
+
+    const [adminData, setAdminData] = useState(initialAdminData);
+
+    const resetForm = () => {
+        setAdminData(initialAdminData);
+        setEditingAdminId(null);
+    };
+
+    const handleCreateButtonClick = () => {
+        resetForm();
+        setShowForm(true);
+    };
 
     const handleInputChange = (e) => {
         const { name, value } = e.target;
@@ -144,7 +157,7 @@ const AdminComponent = () => {
                                 <th>ROLE</th>
                                 <th>EMAIL</th>
                                 <th>
-                                    <button onClick={() => setShowForm(true)}><img src={createBtn} alt='create Button' /></button>
+                                        <button onClick={handleCreateButtonClick}><img src={createBtn} alt='create Button' /></button>
                                 </th>
                             </tr>
                         </thead>

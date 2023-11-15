@@ -22,3 +22,12 @@
 .gameBar button img{
     width: 100%;
 }
+
+.iconeJeu{
+    cursor: pointer;
+}
+
+.previewImg{
+    width: 120px;
+    height: 120px;
+}

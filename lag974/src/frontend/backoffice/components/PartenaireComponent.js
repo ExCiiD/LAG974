@@ -10,12 +10,12 @@ const PartenaireComponent = () => {
     const [partenaires, setPartenaires] = useState([]);
     const [showForm, setShowForm] = useState(false);
     const [editingPartenaire, setEditingPartenaire] = useState(null);
-    const [partenaireData, setPartenaireData] = useState({
+    const initialPartenaireData = {
         nomPartenaire: '',
         logoPartenaire: '',
         lienSitePartenaire: '',
-    });
-
+    };
+    const [partenaireData, setPartenaireData] = useState(initialPartenaireData);
     const token = localStorage.getItem('token');
 
     const fetchPartenaires = useCallback(() => {
@@ -42,6 +42,16 @@ const PartenaireComponent = () => {
             ...prevState,
             [name]: value
         }));
+    };
+
+    const resetForm = () => {
+        setPartenaireData(initialPartenaireData);
+        setEditingPartenaire(null);
+    };
+
+    const handleCreateButtonClick = () => {
+        resetForm();
+        setShowForm(true);
     };
 
     const handleDeletePartenaire = useCallback((id) => {
@@ -158,7 +168,7 @@ const PartenaireComponent = () => {
                         <thead>
                             <tr>
                                 <th colSpan="2">NOM</th>
-                                <th><button onClick={() => setShowForm(true)}><img src={createBtn} alt='create Button' /></button></th>
+                                    <th><button onClick={handleCreateButtonClick}><img src={createBtn} alt='create Button' /></button></th>
                             </tr>
                         </thead>
                         <tbody>

@@ -20,6 +20,7 @@
 .playerImgContainer{
   width: 100%;
   height: 50%;
+  transform: skew(0deg, 0deg);
 }
 
 .player-photo {
@@ -42,4 +43,9 @@
   color:#F7B400;
   transform: skew(0deg, 0deg);
   padding: 10px;
+}
+
+.reseauxPC{
+  width: 25px;
+  height: 25px;
 }

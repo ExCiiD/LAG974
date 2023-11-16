@@ -1,5 +1,7 @@
 import { Equipe } from "../models/equipe.js";
 import { Joueur } from "../models/joueur.js";
+import { Jeu } from "../models/jeu.js";
+import { Historique } from "../models/historique.js";
 import mongoose from "mongoose";
 
 export const equipeController = {};
@@ -35,6 +37,26 @@ equipeController.findById = async (req, res) => {
         res.status(200).json(equipe);
     } catch (error) {
         res.status(500).json({ message: "Erreur lors de la récupération de l'équipe.", error });
+    }
+};
+
+// Fonction pour récupérer une équipe spécifique par son nomJeu
+equipeController.findByNomJeu = async (req, res) => {
+    try {
+        const nomJeu = req.params.nomjeu;
+
+        const jeu = await Jeu.findOne({ nomJeu: nomJeu });
+
+        if (!jeu) {
+            return res.status(404).send("Jeu non trouvé");
+        }
+
+        const equipe = await Equipe.findOne({ jeu: jeu._id }).populate('roster.refJoueur').populate('historique').populate('jeu');
+
+        res.json(equipe);
+    } catch (error) {
+        console.error("Erreur lors de la récupération des données de l'équipe:", error);
+        res.status(500).send("Erreur lors de la récupération des données de l'équipe: " + error.message);
     }
 };
 

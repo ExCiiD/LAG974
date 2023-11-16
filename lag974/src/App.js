@@ -1,11 +1,11 @@
 import { BrowserRouter, Route, Routes, useLocation, Navigate } from "react-router-dom";
 import React, { useState, useEffect } from 'react';
 
-//composants 
+// Composants
 import Navbar from './frontend/frontoffice/components/Navbar.js';
 import Footer from './frontend/frontoffice/components/Footer.js';
 
-//pages front office
+// Pages front office
 import Accueil from "./frontend/frontoffice/pages/Accueil.js";
 import Apropos from "./frontend/frontoffice/pages/Apropos.js";
 import Evenements from "./frontend/frontoffice/pages/Evenements.js";
@@ -15,16 +15,18 @@ import Contact from "./frontend/frontoffice/pages/Contact.js";
 import Roster from "./frontend/frontoffice/pages/Roster.js";
 import EventDetails from "./frontend/frontoffice/pages/EventDetails.js";
 
-//pages back office
+// Pages back office
 import AccueilBack from "./frontend/backoffice/pages/AccueilBack.js";
 import ConnectionBack from "./frontend/backoffice/pages/ConnectionBack.js";
 
 import './App.css';
 
-
 function MainRoutes() {
-
   const [isLoading, setIsLoading] = useState(true);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+  // Obtenir le chemin actuel de l'URL
+  let location = useLocation();
 
   useEffect(() => {
     console.log('Effect is running');
@@ -39,39 +41,27 @@ function MainRoutes() {
     setIsLoading(false);
   }, []);
 
-  // Obtenir le chemin actuel de l'URL
-  let location = useLocation();
-
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-
   // Vérifier si l'utilisateur est dans le backoffice
   const isInBackOffice = location.pathname.startsWith("/backoffice");
 
-
-  function decodeJWT(token) {
-    try {
-      // Split the token into header, payload, and signature
-      const [headerEncoded, payloadEncoded] = token.split('.');
-
-      // Base64Url decode the payload
-      const payloadDecoded = atob(payloadEncoded.replace('-', '+').replace('_', '/'));
-
-      return JSON.parse(payloadDecoded);
-    } catch (error) {
-      console.error("Failed to decode JWT:", error);
-      return null;
-    }
-  }
-
   function isTokenExpired(token) {
+    const decodeJWT = (token) => {
+      try {
+        const [, payloadEncoded] = token.split('.'); // Suppression de 'headerEncoded'
+        const payloadDecoded = atob(payloadEncoded.replace('-', '+').replace('_', '/'));
+        return JSON.parse(payloadDecoded);
+      } catch (error) {
+        console.error("Failed to decode JWT:", error);
+        return null;
+      }
+    };
+
     const decoded = decodeJWT(token);
-    if (!decoded) return true; // si le token n'a pas été decodé, le considéré comme expiré
+    if (!decoded) return true;
 
     const currentTimestamp = Math.floor(Date.now() / 1000);
     return decoded.exp < currentTimestamp;
   }
-
-
   return (
     <div className="App">
       {!isInBackOffice && <Navbar />}
@@ -82,7 +72,7 @@ function MainRoutes() {
         <Route path="/evenements" element={<Evenements />} />
         <Route path="/evenements/details" element={<EventDetails />} />
         <Route path="/equipes" element={<Equipes />} />
-        <Route path="/equipes/roster" element={<Roster />} />
+        <Route path="/equipes/roster/:nomJeu" element={<Roster />} />
         <Route path="/partenaires" element={<Partenaires />} />
         <Route path="/contact" element={<Contact />} />
         {/* back office */}

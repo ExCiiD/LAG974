@@ -1,6 +1,7 @@
 import React from 'react';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { NavLink } from "react-router-dom";
+import axios from 'axios';
 
 import '../styles/Accueil.css';
 
@@ -21,6 +22,7 @@ import leaveBtn from '../images/leaveBtn.png';
 function Accueil() {
     //POPUP
     const [popUp, setPopUp] = useState(false);
+    const [jeux, setJeux] = useState([]);
 
     const openPopUp = () => {
         setPopUp(!popUp);
@@ -29,14 +31,20 @@ function Accueil() {
     const closePopUp = () => {
         setPopUp(false);
     };
-    //SIMULATION DONNEES API
-    /*     const logos = [
-            logo1, 
-            logo2, 
-            logo3, 
-            logo4
-        ]
-     */
+
+    useEffect(() => {
+        const fetchJeuData = async () => {
+            try {
+                const response = await axios.get(`/lagapi/jeux`);
+                // Mettre à jour l'état avec les données de l'équipe
+                setJeux(response.data.jeux);
+                console.log('reponse :', response.data.jeux);
+            } catch (error) {
+                console.error("Erreur lors du chargement des données de l'équipe:", error);
+            }
+        };
+        fetchJeuData();
+    }, []);
     return (
         <div className='content accueil'>
             <div className='sectionEvenement'>
@@ -65,9 +73,11 @@ function Accueil() {
                 <a href='https://www.youtube.com/@LAG974' ><img className='iconeReseaux' src={ytb} alt='lien' /></a>
             </div>
             <div className='sectionEquipes'>
-                <NavLink className='navLinks' to={"/equipes/roster"}><GameCard /></NavLink>
-                <NavLink className='navLinks' to={"/equipes/roster"}><GameCard /></NavLink>
-                <NavLink className='navLinks' to={"/equipes/roster"}><GameCard /></NavLink>
+                {Array.isArray(jeux) && jeux.map(jeu => (
+                    <NavLink key={jeu._id} className='navLinks' to={`/equipes/roster/${jeu.nomJeu}`}>
+                        <GameCard nomJeu={jeu.nomJeu} imageJeu={jeu.thumbnailJeu} />
+                    </NavLink>
+                ))}
             </div>
             <div className='bandePartenaires'>
                 {/* {logos.map((logo) =>(

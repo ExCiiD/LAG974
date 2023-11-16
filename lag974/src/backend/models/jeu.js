@@ -5,6 +5,10 @@ const jeuSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
+    acronyme: {
+        type: String,
+        required: true,
+    },
     iconeJeu: {
         type: String,
     },

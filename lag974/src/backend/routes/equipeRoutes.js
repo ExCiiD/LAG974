@@ -13,6 +13,9 @@ equipeRouter.get('/equipes', equipeController.findAll);
 // Route pour récupérer une équipe spécifique par son ID
 equipeRouter.get('/equipes/id/:id', equipeController.findById);
 
+// Route pour récupérer une équipe spécifique par son nomJeu
+equipeRouter.get('/equipes/nomjeu/:nomjeu', equipeController.findByNomJeu);
+
 // Route pour récupérer une équipe par son game ID
 equipeRouter.get('/equipes/jeu/:jeuid', equipeController.findByJeuId);
 

@@ -21,7 +21,7 @@ const EventHistoric = ({ events }) => {
             <ul>
                 {events.map((event, index) => (
                     <li key={index}>
-                        <span className="event-name">{event.nomEvenement}</span>
+                        <span className="event-name">{event.nomEventHistoric}</span>
                         <span className="event-ranking">Top {event.classement}</span>
                         <span className="event-date">
                             {formatDate(event.dateDeDebut)} - {formatDate(event.dateDeFin)}

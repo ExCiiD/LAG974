@@ -2,19 +2,15 @@ import React from 'react';
 
 import '../styles/GameCard.css';
 
-import lol from '../images/LOL.jpg'
-
-const GameCard = () => {
+const GameCard = ({ nomJeu, imageJeu }) => {
     return (
         <div className='gameCard'>
-            <a  href='#'>
                 <div className='imgContainer'>
-                        <img className='gameImg' src={lol} alt='image de jeu' />
+                <img className='gameImg' src={imageJeu} alt={`image de ${nomJeu}`} />
                 </div>
                 <div className='gameName'>
-                    <h2>GameName</h2>
-                </div>     
-            </a>    
+                <h2>{nomJeu}</h2>
+            </div>
         </div>
     )
 }

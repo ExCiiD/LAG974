@@ -44,6 +44,14 @@ const PartenaireComponent = () => {
         }));
     };
 
+    const handleFileChange = (e) => {
+        const { name, files } = e.target;
+        setPartenaireData(prevState => ({
+            ...prevState,
+            [name]: files[0] // Prend le premier fichier
+        }));
+    };
+
     const resetForm = () => {
         setPartenaireData(initialPartenaireData);
         setEditingPartenaire(null);
@@ -85,10 +93,35 @@ const PartenaireComponent = () => {
         }
     }, [editingPartenaire]);
 
-    const handleSubmit = () => {
+    const handleSubmit = async () => {
+        let formData = new FormData();
+        let isFile = partenaireData.logoPartenaire instanceof File;
+
+        if (isFile) {
+            formData.append('image', partenaireData.logoPartenaire);
+        }
+
+        let imageUrl = partenaireData.logoPartenaire;
+        if (isFile || editingPartenaire) {
+            try {
+                const uploadResponse = await axios.post(`/upload/partenaires/${editingPartenaire._id}/logoPartenaire`, formData, {
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                        'Content-Type': 'multipart/form-data'
+                    },
+                });
+                imageUrl = uploadResponse.data.imageUrl;
+            } catch (uploadError) {
+                console.error('Error uploading file:', uploadError);
+                return;
+            }
+        }
+
+        const partenaireDataWithImage = { ...partenaireData, logoPartenaire: imageUrl };
+
         if (editingPartenaire) {
             // Update logic
-            axios.put(`/lagapi/partenaires/${editingPartenaire._id}`, partenaireData, {
+            axios.put(`/lagapi/partenaires/${editingPartenaire._id}`, partenaireDataWithImage, {
                 headers: {
                     'Authorization': `Bearer ${token}`
                 }
@@ -126,6 +159,7 @@ const PartenaireComponent = () => {
         }
     };
 
+    const imagePreview = partenaireData.logoPartenaire instanceof File ? URL.createObjectURL(partenaireData.logoPartenaire) : partenaireData.logoPartenaire;
 
     return (
         <div className="partenaireContainer">
@@ -138,14 +172,22 @@ const PartenaireComponent = () => {
                         onChange={handleInputChange}
                         placeholder="Nom du partenaire"
                     />
+                    {editingPartenaire ? (
+                        <>
+                            {imagePreview && (
+                                <img src={imagePreview} alt="Aperçu" style={{ width: '100px', height: '100px' }} />
+                            )}
                     <input
                         className='backFormInput'
-                        type="url"
+                                type="file"
                         name="logoPartenaire"
-                        value={partenaireData.logoPartenaire}
-                        onChange={handleInputChange}
-                        placeholder="Logo URL du partenaire"
+                                onChange={handleFileChange}
+                                placeholder="Logo du partenaire"
                     />
+                        </>
+                    ) : (
+                        <p>Veuillez créer l'événement sans image, puis modifiez le pour pouvoir en mettre une.</p>
+                    )}
                     <input
                         className='backFormInput'
                         type="url"

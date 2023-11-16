@@ -7,7 +7,6 @@ const PartenaireSchema = new mongoose.Schema({
     },
     logoPartenaire: {
         type: String,
-        required: true,
     },
     lienSitePartenaire: {
         type: String,

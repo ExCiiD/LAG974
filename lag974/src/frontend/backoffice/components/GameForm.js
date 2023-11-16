@@ -4,7 +4,8 @@ export const GameForm = ({ onAdd, onUpdate, onCancel, initialData = {}, isUpdate
     const [formData, setFormData] = useState({
         nomJeu: '',
         iconeJeu: '',
-        thumbnailJeu: ''
+        thumbnailJeu: '',
+        acronyme: '',
     });
     const [iconePreview, setIconePreview] = useState('');
     const [thumbnailPreview, setThumbnailPreview] = useState('');
@@ -13,6 +14,7 @@ export const GameForm = ({ onAdd, onUpdate, onCancel, initialData = {}, isUpdate
         if (isUpdate) {
             setFormData({
                 nomJeu: initialData.nomJeu || '',
+                acronyme: initialData.acronyme || '',
                 iconeJeu: initialData.iconeJeu || '',
                 thumbnailJeu: initialData.thumbnailJeu || ''
             });
@@ -54,6 +56,12 @@ export const GameForm = ({ onAdd, onUpdate, onCancel, initialData = {}, isUpdate
                 value={formData.nomJeu}
                 onChange={e => setFormData({ ...formData, nomJeu: e.target.value })}
                 placeholder="Nom du jeu"
+            />
+            <input
+                className='backFormInput'
+                value={formData.acronyme}
+                onChange={e => setFormData({ ...formData, acronyme: e.target.value })}
+                placeholder="Acronyme"
             />
             {isUpdate && (
                 <>

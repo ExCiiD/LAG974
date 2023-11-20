@@ -79,4 +79,42 @@ uploadRouter.post('/:model/:id/:imageField', requireRole(['mainAdmin', 'staff'])
         res.status(500).send(error.message);
     }
 });
+
+uploadRouter.delete('/:model/:id/:imageField', requireRole(['mainAdmin', 'staff']), async (req, res) => {
+    const modelMap = {
+        'evenements': Evenement,
+        'jeux': Jeu,
+        'partenaires': Partenaire,
+        'joueurs': Joueur,
+    };
+
+    const model = modelMap[req.params.model];
+    const imageField = req.params.imageField;
+
+    if (!model) {
+        return res.status(400).send('Invalid model type.');
+    }
+
+    try {
+        const item = await model.findById(req.params.id);
+        if (!item || !item[imageField]) {
+            return res.status(404).send('Item or image not found.');
+        }
+
+        const imagePath = item[imageField];
+        const fullImagePath = path.join(__dirname, '../../../public', imagePath);
+
+        if (fs.existsSync(fullImagePath)) {
+            fs.unlinkSync(fullImagePath); // Supprime le fichier image
+        }
+
+        item[imageField] = null; // Met à jour le champ image de l'objet
+        await item.save();
+
+        res.status(200).send('Image deleted successfully.');
+    } catch (error) {
+        res.status(500).send(error.message);
+    }
+});
+
 export default uploadRouter;

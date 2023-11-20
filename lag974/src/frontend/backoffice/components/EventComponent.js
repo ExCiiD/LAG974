@@ -106,12 +106,10 @@ const EventComponent = () => {
     };
 
     // Fonction pour créer un événement à l'appui d'un bouton
-    const handleCreateEvent = async (newEventData, imageUrl) => {
-        // Si une nouvelle image est uploadée, on utilise son URL, sinon on garde celle du state
-        const eventDataWithImage = imageUrl ? { ...newEventData, thumbnailEvent: imageUrl } : newEventData;
+    const handleCreateEvent = async (newEventData) => {
 
         try {
-            const response = await axios.post('/lagapi/evenements', eventDataWithImage, {
+            const response = await axios.post('/lagapi/evenements', newEventData, {
                 headers: {
                     'Authorization': `Bearer ${token}`
                 }
@@ -124,21 +122,49 @@ const EventComponent = () => {
         }
     };
 
-    //fonction pour supprimer un evenement a l'appui de bouton
-    const handleDeleteEvent = (eventId) => {
-        axios.delete(`/lagapi/evenements/${eventId}`, {
-            headers: {
-                'Authorization': `Bearer ${token}`
+    const handleDeleteEvent = async (eventId) => {
+        // Demander une confirmation avant de procéder
+        const isConfirmed = window.confirm("Êtes-vous sûr de vouloir supprimer cet événement ?");
+
+        if (isConfirmed) {
+            try {
+                // Obtenir les détails de l'événement pour vérifier si une image est associée
+                const eventResponse = await axios.get(`/lagapi/evenements/${eventId}`, {
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+
+                const event = eventResponse.data;
+
+                // Supprimer l'image si elle existe
+                if (event.thumbnailEvent) {
+                    await axios.delete(`/upload/evenements/${eventId}/thumbnailEvent`, {
+                        headers: {
+                            'Authorization': `Bearer ${token}`
+                        }
+                    });
+                    console.log('Image de l\'événement supprimée');
+                }
+
+                // Supprimer l'événement
+                await axios.delete(`/lagapi/evenements/${eventId}`, {
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+
+                console.log('Événement supprimé');
+
+                // Rafraîchir la liste des événements après la suppression
+                fetchEvents();
+            } catch (error) {
+                console.error('Erreur lors de la suppression de l\'événement ou de son image:', error.response.data);
             }
-        })
-            .then(response => {
-                console.log('Événement supprimé', response.data);
-                fetchEvents();    // Rafraîchir la liste des événements après la suppression
-            })
-            .catch(error => {
-                console.error('Erreur lors de la suppression', error.response.data);
-            });
-    }
+        } else {
+            console.log('Suppression annulée');
+        }
+    };
 
     //fonction pour afficher les donnée de l'evenement a modifier
     const handleUpdateEvent = (eventId) => {
@@ -182,23 +208,15 @@ const EventComponent = () => {
         // Vérifier si eventData.thumbnailEvent est un fichier
         const isFile = eventData.thumbnailEvent instanceof File;
 
-        // Définir le point de terminaison pour l'upload
-        const uploadEndpoint = `/upload/evenements/${editingEventId}/thumbnailEvent`;
-
         let imageUrl = eventData.thumbnailEvent;
-        // Si c'est un fichier, l'ajouter au formData
-        if (isFile) {
+        // Si c'est un fichier et qu'il s'agit d'une mise à jour, procéder à l'upload
+        if (isFile && editingEventId) {
+            // Définir le point de terminaison pour l'upload
+            const uploadEndpoint = `/upload/evenements/${editingEventId}/thumbnailEvent`;
+
             formData.append('image', eventData.thumbnailEvent);
-        }
 
-        // S'il y a un nouveau fichier ou si nous sommes en train de créer un événement, procéder à l'upload
-        if (isFile || !editingEventId) {
             try {
-                // Ajouter la confirmation de remplacement si nécessaire
-                if (editingEventId) {
-                    formData.append('confirmReplace', 'true');
-                }
-
                 // Effectuer la requête d'upload
                 const uploadResponse = await axios.post(uploadEndpoint, formData, {
                     headers: {
@@ -220,7 +238,7 @@ const EventComponent = () => {
         if (editingEventId) {
             await handleActualUpdate(editingEventId, eventDataWithImage);
         } else {
-            await handleCreateEvent(eventDataWithImage);
+            await handleCreateEvent(eventData);
         }
     };
 

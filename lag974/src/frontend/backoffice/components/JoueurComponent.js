@@ -167,19 +167,47 @@ const JoueurComponent = () => {
         }
     };
 
-    const handleDeleteJoueur = (id) => {
-        axios.delete(`/lagapi/joueurs/${id}`, {
-            headers: {
-                'Authorization': `Bearer ${token}`
-            }
-        })
-            .then(response => {
+    const handleDeleteJoueur = async (id) => {
+        // Demander une confirmation avant de procéder
+        const isConfirmed = window.confirm("Êtes-vous sûr de vouloir supprimer ce joueur ?");
+
+        if (isConfirmed) {
+            try {
+                // Obtenir les détails du joueur pour vérifier si une image est associée
+                const joueurResponse = await axios.get(`/lagapi/joueurs/${id}`, {
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+
+                const joueur = joueurResponse.data;
+
+                // Supprimer l'image si elle existe
+                if (joueur.photoJoueur) {
+                    await axios.delete(`/upload/joueurs/${id}/photoJoueur`, {
+                        headers: {
+                            'Authorization': `Bearer ${token}`
+                        }
+                    });
+                    console.log('Image du joueur supprimée');
+                }
+
+                // Supprimer le joueur
+                await axios.delete(`/lagapi/joueurs/${id}`, {
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+
+                console.log('Joueur supprimé');
+
+                // Rafraîchir la liste des joueurs après la suppression
                 fetchJoueurs();
-            })
-            .catch(error => {
-                console.error('Erreur lors de la suppression', error);
-            });
-    }
+            } catch (error) {
+                console.error('Erreur lors de la suppression du joueur ou de son image:', error.response.data);
+            }
+        }
+    };
 
     //GESTION DES FORMATS DE DATES
     const formatDate = (dateString) => {

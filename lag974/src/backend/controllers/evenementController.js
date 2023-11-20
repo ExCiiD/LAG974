@@ -6,12 +6,8 @@ export const evenementController = {};
 evenementController.createEvenement = async (req, res) => {
     try {
         const data = req.body;
-
-        if (req.file) {
-            const uploadPath = 'public/uploads'; // Chemin utilisé par express.static
-            data.image = req.file.path.replace(new RegExp(`^${uploadPath}`), '');
-        }
         const newEvenement = await Evenement.create(data);
+
         res.status(201).json({ success: true, message: "Événement créé avec succès", evenement: newEvenement });
     } catch (error) {
         res.status(500).json({ success: false, message: "Erreur lors de la création de l'événement", error: error.message });

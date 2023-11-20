@@ -14,6 +14,7 @@ import Partenaires from "./frontend/frontoffice/pages/Partenaires.js";
 import Contact from "./frontend/frontoffice/pages/Contact.js";
 import Roster from "./frontend/frontoffice/pages/Roster.js";
 import EventDetails from "./frontend/frontoffice/pages/EventDetails.js";
+import { MentionsLegales } from "./frontend/frontoffice/pages/MentionLegale.js";
 
 // Pages back office
 import AccueilBack from "./frontend/backoffice/pages/AccueilBack.js";
@@ -75,6 +76,7 @@ function MainRoutes() {
         <Route path="/equipes/roster/:nomJeu" element={<Roster />} />
         <Route path="/partenaires" element={<Partenaires />} />
         <Route path="/contact" element={<Contact />} />
+        <Route path="/mentionslegales" element={<MentionsLegales />} />
         {/* back office */}
         <Route path="/backoffice" element={isLoading ? <div>Loading...</div> : (isLoggedIn ? <AccueilBack /> : <Navigate to="/backoffice/login" replace />)} />
         <Route path="/backoffice/login" element={<ConnectionBack />} />

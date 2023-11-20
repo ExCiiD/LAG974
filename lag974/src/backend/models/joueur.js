@@ -16,7 +16,6 @@ const joueurSchema = new mongoose.Schema({
     },
     dateDeNaissanceJoueur: {
         type: Date,
-        required: true
     },
     liensReseauxJoueur: {
         insta: {

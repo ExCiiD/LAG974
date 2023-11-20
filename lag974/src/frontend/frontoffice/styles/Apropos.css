@@ -6,7 +6,7 @@
 .ongletContainer{
     display: flex;
     position: relative;
-    right: -30%;
+    right: -20%;
     top: 20%;
     margin-bottom: 80px;
 }

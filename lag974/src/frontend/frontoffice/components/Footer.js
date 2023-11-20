@@ -38,7 +38,7 @@ function Footer() {
             <div className='footer_gold'>
                 <a href='https://github.com/ExCiiD'>GITHUB</a>
                 <span>ARISON NIRINA</span>
-                <a href='#'>MENTION LÉGALE</a>
+                <NavLink className='navLinks' to={"/mentionslegales"}>MENTION LÉGALE</NavLink>
                 <span>© LAG974  2023</span>
             </div>
         </div>

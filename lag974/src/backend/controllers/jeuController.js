@@ -2,6 +2,7 @@ import mongoose from 'mongoose';
 import { Jeu } from "../models/jeu.js";
 import { Equipe } from '../models/equipe.js';
 import { Historique } from '../models/historique.js';
+import { Joueur } from '../models/joueur.js';
 
 export const jeuController = {};
 
@@ -102,11 +103,17 @@ jeuController.deleteJeu = async (req, res) => {
         }
 
         // Suppression des équipes associées
+        const equipesSupprimees = await Equipe.find({ jeu: id }).select('_id');
         await Equipe.deleteMany({ jeu: id });
 
         // Suppression de l'historique associé
         await Historique.deleteMany({ refJeu: id });
 
+        // Mise à jour des joueurs dont les équipes sont associées au jeu supprimé
+        if (equipesSupprimees.length > 0) {
+            const equipeIds = equipesSupprimees.map(equipe => equipe._id);
+            await Joueur.updateMany({ equipe: { $in: equipeIds } }, { $set: { equipe: null } });
+        }
 
         res.status(204).json({ message: 'jeu supprimé !' }); // Réponse sans contenu pour indiquer la suppression réussie
     } catch (error) {

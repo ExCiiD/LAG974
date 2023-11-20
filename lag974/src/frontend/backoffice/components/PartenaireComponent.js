@@ -62,18 +62,46 @@ const PartenaireComponent = () => {
         setShowForm(true);
     };
 
-    const handleDeletePartenaire = useCallback((id) => {
-        axios.delete(`/lagapi/partenaires/${id}`, {
-            headers: {
-                'Authorization': `Bearer ${token}`
-            }
-        })
-            .then(() => {
+    const handleDeletePartenaire = useCallback(async (id) => {
+        // Demander une confirmation avant de procéder
+        const isConfirmed = window.confirm("Êtes-vous sûr de vouloir supprimer ce partenaire ?");
+
+        if (isConfirmed) {
+            try {
+                // Obtenir les détails du partenaire pour vérifier si une image est associée
+                const partenaireResponse = await axios.get(`/lagapi/partenaires/${id}`, {
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+
+                const partenaire = partenaireResponse.data;
+
+                // Supprimer l'image si elle existe
+                if (partenaire.logoPartenaire) {
+                    await axios.delete(`/upload/partenaires/${id}/logoPartenaire`, {
+                        headers: {
+                            'Authorization': `Bearer ${token}`
+                        }
+                    });
+                    console.log('Image du partenaire supprimée');
+                }
+
+                // Supprimer le partenaire
+                await axios.delete(`/lagapi/partenaires/${id}`, {
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+
+                console.log('Partenaire supprimé');
+
+                // Rafraîchir la liste des partenaires après la suppression
                 fetchPartenaires();
-            })
-            .catch(error => {
-                console.error('Erreur lors de la suppression', error);
-            });
+            } catch (error) {
+                console.error('Erreur lors de la suppression du partenaire ou de son image:', error.response.data);
+            }
+        }
     }, [fetchPartenaires, token]);
 
     const handleUpdatePartenaire = useCallback((partenaire) => {

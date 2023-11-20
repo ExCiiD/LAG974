@@ -150,24 +150,54 @@ const EquipeComponent = () => {
 
 
     //FONCTION POUR GERER LA SUPPRESSION
-    const handleDeleteGame = (gameId) => {
-        if (window.confirm("Êtes-vous sûr de vouloir supprimer cette equipe ?")) {
-            axios.delete(`/lagapi/jeux/${gameId}`, {
-                headers: {
-                    'Authorization': `Bearer ${token}`
-                }
-            })
-                .then(() => {
-                    // Mettre à jour l'état pour refléter la suppression
-                    setGames(prevGames => prevGames.filter(game => game._id !== gameId));
-                    setSelectedGameId(null);
-                    setSelectedComponent(null);
-                })
-                .catch(error => {
-                    console.error("Erreur lors de la suppression du jeu:", error);
+    const handleDeleteGame = async (gameId) => {
+        if (window.confirm("Êtes-vous sûr de vouloir supprimer ce jeu ?")) {
+            try {
+                // Trouver les détails du jeu pour vérifier si une image est associée
+                const gameResponse = await axios.get(`/lagapi/jeux/${gameId}`, {
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
                 });
+
+                const game = gameResponse.data;
+
+
+                // Supprimer l'image si elle existe
+                if (game.thumbnailJeu) {
+                    await axios.delete(`/upload/jeux/${gameId}/thumbnailJeu`, {
+                        headers: {
+                            'Authorization': `Bearer ${token}`
+                        }
+                    });
+                }
+                // Supprimer l'icone si elle existe
+                if (game.iconeJeu) {
+                    await axios.delete(`/upload/jeux/${gameId}/iconeJeu`, {
+                        headers: {
+                            'Authorization': `Bearer ${token}`
+                        }
+                    });
+                }
+
+                // Supprimer le jeu
+                await axios.delete(`/lagapi/jeux/${gameId}`, {
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+
+                // Mettre à jour l'état pour refléter la suppression du jeu
+                setGames(prevGames => prevGames.filter(game => game._id !== gameId));
+                setSelectedGameId(null);
+                setSelectedComponent(null);
+
+            } catch (error) {
+                console.error("Erreur lors de la suppression du jeu ou de son image:", error);
+            }
         }
     };
+
 
     // Fonction pour afficher le composant Roster ou Historique
     const handleShowComponent = (componentName) => {

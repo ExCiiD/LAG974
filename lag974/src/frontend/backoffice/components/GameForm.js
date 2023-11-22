@@ -83,10 +83,12 @@ export const GameForm = ({ onAdd, onUpdate, onCancel, initialData = {}, isUpdate
                     />
                 </>
             )}
+            <div className='backFormBtnCtnr'>
             <button className='backFormBtn' type="submit">
                 {isUpdate ? 'Mettre à jour le jeu' : 'Créer le jeu'}
             </button>
             <button className='backFormBtn' type="button" onClick={onCancel}>Annuler</button>
+            </div>
         </form>
     );
 };

@@ -1,13 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
+import axios from 'axios';
+import { NavLink } from "react-router-dom";
 
 import prevArrow from '../images/prevArrow.png';
 import nextArrow from '../images/nextArrow.png';
-
-// simulation bdd
-import lol from '../images/banner.png'
-import rl from '../images/rl8.jpg'
-import val from '../images/valo.webp'
 
 const Container = styled.div`
     width: 95vw;
@@ -64,13 +61,14 @@ const Image = styled.img`
   object-fit: cover; // assure que toutes les images ont la même taille
 `;
 
-const ButtonLink = styled.a`
+const ButtonLink = styled.button`
+    border-radius:none;
   position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
   padding: 8px 12px;
-  background-color: rgba(247, 180, 0, 0.7);
+  background-color: rgba(247, 180, 0, 0.9);
   color: black;
   border-radius: 5px;
   text-decoration: none;
@@ -97,7 +95,7 @@ const ArrowContainer = styled.a`
 
     @media (max-width: 768px) { // Ajustements pour les tablettes et les mobiles
         transform: rotateZ(90deg);
-        width: 100vw;
+        width: 75vw;
     }
 `;
 const ArrowButton = styled.button`
@@ -135,15 +133,15 @@ const Carousel = () => {
 
     const styles = [
         {
-            transform: 'rotateY(70deg) translateX(-700px) rotateY(-70deg)',
-            opacity: 0.6, zIndex: 1
-        },
-        {
             transform: 'rotateY(0deg) translateX(0) scale(1.3)',
             opacity: 1, zIndex: 3
         },
         {
             transform: 'rotateY(-70deg) translateX(700px) rotateY(70deg)',
+            opacity: 0.6, zIndex: 1
+        },
+        {
+            transform: 'rotateY(70deg) translateX(-700px) rotateY(-70deg)',
             opacity: 0.6, zIndex: 1
         }
     ];
@@ -188,37 +186,66 @@ const Carousel = () => {
         currentStyles[(5 - position) % 3]
     ];
 
+    //pour fetch et afficher les données du carousel :
+
+    const [isLoading, setIsLoading] = useState(false);
 
     const [cardsData, setCardsData] = useState([]); // Données du carrousel
-    // Simule l'appel API pour récupérer les données
     useEffect(() => {
-        // axios.get('YOUR_BACKEND_API_URL').then(response => {
-        //   setCardsData(response.data);
-        // });
-        setCardsData([
-            { imgSrc: lol, alt: 'Image 1' },
-            { imgSrc: rl, alt: 'Image 2' },
-            { imgSrc: val, alt: 'Image 3' }
-        ]);
+        const fetchEventData = async () => {
+            try {
+                setIsLoading(true);
+                const response = await axios.get(`/lagapi/evenements`);
+                // Mettre à jour l'état avec les données de l'équipe
+                setCardsData(response.data.evenements);
+                console.log('reponse event :', response.data);
+                setIsLoading(false);
+            } catch (error) {
+                console.error("Erreur lors du chargement des données de l'équipe:", error);
+            }
+        };
+        fetchEventData();
     }, []);
+
+    useEffect(() => {
+        console.log('Updated cardsData:', cardsData);
+    }, [cardsData]);
 
 
     return (
         <Container>
+            {isLoading ? (
+                <div ><i className='bx bx-loader-circle bx-spin' style={{ color: '#fbf6f6' }} ></i></div>
+            ) : (
             <Wrapper>
                 <ArrowContainer>
                     <ArrowButton onClick={handlePrev} direction="left" img={prevArrow} />
                     <ArrowButton onClick={handleNext} direction="right" img={nextArrow} />
                 </ArrowContainer>
                 <CardsWrapper>
-                    {cardsData.map((card, index) => (
-                        <Card key={index} style={orderedStyles[index % 3]}>
-                            <Image src={card.imgSrc} alt={card.alt} />
-                            <ButtonLink href="#">En savoir plus</ButtonLink>
-                        </Card>
-                    ))}
+                            {Array.isArray(cardsData) &&
+                                cardsData
+                                    /* classe par date du plus récent au plus vieux  */
+                                    .sort(function compare(a, b) {
+                                        var dateA = new Date(a.dateDebut);
+                                        var dateB = new Date(b.dateDebut);
+                                        return dateB - dateA;
+                                    })
+                                    /*prends uniquement les 3 derniers*/
+                                    .slice(0, 3)
+                                    .map((card, index) => (
+                                        <Card key={index} style={orderedStyles[index % 3]}>
+                                            <Image src={card.thumbnailEvent} alt={card.nomEvent} />
+                                            <ButtonLink>
+                                                <NavLink key={card._id} className='navLinks' to={`/evenements/${card._id}`}>
+                                                    En savoir plus
+                                                </NavLink>
+                                            </ButtonLink>
+                                        </Card>
+                                    ))}
                 </CardsWrapper>
             </Wrapper>
+            )}
         </Container>
     );
 }

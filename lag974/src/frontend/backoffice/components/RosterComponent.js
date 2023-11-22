@@ -140,8 +140,10 @@ const RosterComponent = ({ gameId }) => {
                             <option key={j._id} value={j._id}>{j.pseudoJoueur}</option>
                         ))}
                     </select>
+                    <div className='backFormBtnCtnr'>
                     <button className='backFormBtn' onClick={() => ajouterJoueur(gameId, selectedJoueur)}>Ajouter joueur</button>
                     <button className='backFormBtn' onClick={toggleAddPlayerInterface}>Annuler</button>
+                    </div>
                 </div>
             )}
         </div>

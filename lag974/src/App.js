@@ -71,7 +71,7 @@ function MainRoutes() {
         <Route path="/" element={<Accueil />} />
         <Route path="/a_propos" element={<Apropos />} />
         <Route path="/evenements" element={<Evenements />} />
-        <Route path="/evenements/details" element={<EventDetails />} />
+        <Route path="/evenements/:eventId" element={<EventDetails />} />
         <Route path="/equipes" element={<Equipes />} />
         <Route path="/equipes/roster/:nomJeu" element={<Roster />} />
         <Route path="/partenaires" element={<Partenaires />} />

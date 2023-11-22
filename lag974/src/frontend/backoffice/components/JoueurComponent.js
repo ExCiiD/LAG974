@@ -255,7 +255,7 @@ const JoueurComponent = () => {
                     {!editingJoueur && (
                         <input className='backFormInput' name="equipe" value={joueurData?.equipe || ''} onChange={handleInputChange} placeholder="ID de l'équipe" />
                     )}
-                    <div className='backFormBtnContainer'>
+                    <div className='backFormBtnCtnr'>
                         <button className='backFormBtn' onClick={editingJoueur ? () => handleActualUpdate(editingJoueur) : handleCreateJoueur}>
                             {editingJoueur ? 'Mettre à jour' : 'Créer'}
                         </button>
@@ -265,7 +265,7 @@ const JoueurComponent = () => {
                     </div>
                 </div>
             ) : (
-                <div>
+                    <div className='backTableList'>
                     <table>
                         <thead>
                             <tr>

@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
+import { useState, useEffect } from 'react';
+import axios from 'axios';
+import { Link } from 'react-router-dom';
 import '../styles/Apropos.css'
 import { VerticalTimeline, VerticalTimelineElement } from 'react-vertical-timeline-component';
 import 'react-vertical-timeline-component/style.min.css';
-import { Link } from 'react-router-dom';
 
 const Apropos = () => {
     //POUR AFFICHER LE BON ONGLET 
@@ -22,6 +23,34 @@ const Apropos = () => {
         }
     };
     //
+
+    const [events, setEvents] = useState([]);
+
+    useEffect(() => {
+        const fetchJeuData = async () => {
+            try {
+                const response = await axios.get(`/lagapi/Evenements`);
+                // Mettre à jour l'état avec les données de l'équipe
+                setEvents(response.data.evenements);
+                console.log('reponse :', response.data.evenements);
+            } catch (error) {
+                console.error("Erreur lors du chargement des données de l'équipe:", error);
+            }
+        };
+        fetchJeuData();
+    }, []);
+
+    const formatDate = (dateString) => {
+        // Séparation de la date en composants (année, mois, jour)
+        const parts = dateString.split('-');
+        if (parts.length !== 3) {
+            console.error("Format de date incorrect:", dateString);
+            return "Date inconnue";
+        }
+
+        // Inversion des composants pour obtenir le format jj/mm/aaaa
+        return `${parts[2].substring(0, 2)}/${parts[1]}/${parts[0]}`;
+    };
 
     return (
         <div className='content apropos'>
@@ -70,59 +99,37 @@ const Apropos = () => {
             {showHistorique && (
                 <div className='blocHistorique'>
                     <VerticalTimeline>
-                        <VerticalTimelineElement
-                            className="vertical-timeline-element--work"
-                            contentStyle={{ background: 'rgb(247, 180, 0)', color: '#000' }}
-                            contentArrowStyle={{ borderRight: '7px solid  rgb(247, 180, 0)' }}
-                            date="2011 - present"
-                            iconStyle={{ background: 'rgb(247, 180, 0)', color: '#fff' }}
-                        /* icon={} */
-                        >
-                            <h3 className="vertical-timeline-element-title">Title</h3>
-                            <p>
-                                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut et massa mi. Aliquam in hendrerit urna. Pellentesque sit amet sapien fringilla, mattis ligula consectetur, ultrices mauris. Maecenas vitae mattis tellus. Nullam quis imperdiet augue. Vestibulum auctor ornare leo, non suscipit magna interdum eu.
-                            </p>
-                        </VerticalTimelineElement>
-                        <VerticalTimelineElement
-                            className="vertical-timeline-element--work"
-                            contentStyle={{ background: 'rgb(247, 180, 0)', color: '#000' }}
-                            contentArrowStyle={{ borderRight: '7px solid  rgb(247, 180, 0)' }}
-                            date="2011 - present"
-                            iconStyle={{ background: 'rgb(247, 180, 0)', color: '#fff' }}
-                        /* icon={} */
-                        >
-                            <h3 className="vertical-timeline-element-title">Title</h3>
-                            <p>
-                                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut et massa mi. Aliquam in hendrerit urna. Pellentesque sit amet sapien fringilla, mattis ligula consectetur, ultrices mauris. Maecenas vitae mattis tellus. Nullam quis imperdiet augue. Vestibulum auctor ornare leo, non suscipit magna interdum eu.
-                            </p>
-                        </VerticalTimelineElement>
-                        <VerticalTimelineElement
-                            className="vertical-timeline-element--work"
-                            contentStyle={{ background: 'rgb(247, 180, 0)', color: '#000' }}
-                            contentArrowStyle={{ borderRight: '7px solid  rgb(247, 180, 0)' }}
-                            date="2011 - present"
-                            iconStyle={{ background: 'rgb(247, 180, 0)', color: '#fff' }}
-                        /* icon={} */
-                        >
-                            <h3 className="vertical-timeline-element-title">Title</h3>
-                            <p>
-                                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut et massa mi. Aliquam in hendrerit urna. Pellentesque sit amet sapien fringilla, mattis ligula consectetur, ultrices mauris. Maecenas vitae mattis tellus. Nullam quis imperdiet augue. Vestibulum auctor ornare leo, non suscipit magna interdum eu.
-                            </p>
-                        </VerticalTimelineElement>
-                        <VerticalTimelineElement
-                            className="vertical-timeline-element--work"
-                            contentStyle={{ background: 'rgb(247, 180, 0)', color: '#000' }}
-                            contentArrowStyle={{ borderRight: '7px solid  rgb(247, 180, 0)' }}
-                            date="2011 - present"
-                            iconStyle={{ background: 'rgb(247, 180, 0)', color: '#fff' }}
-                        /* icon={} */
-                        >
-                            <h3 className="vertical-timeline-element-title">Title</h3>
-                            <p>
-                                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut et massa mi. Aliquam in hendrerit urna. Pellentesque sit amet sapien fringilla, mattis ligula consectetur, ultrices mauris. Maecenas vitae mattis tellus. Nullam quis imperdiet augue. Vestibulum auctor ornare leo, non suscipit magna interdum eu.
-                            </p>
-                        </VerticalTimelineElement>
-
+                        {Array.isArray(events) &&
+                            events
+                                /* classe par date du plus récent au plus vieux */
+                                .sort(function compare(a, b) {
+                                    var dateA = new Date(a.dateDebut);
+                                    var dateB = new Date(b.dateDebut);
+                                    return dateB - dateA;
+                                })
+                                .map(event => (
+                                    <VerticalTimelineElement
+                                        key={event._id}
+                                        className="vertical-timeline-element--work"
+                                        contentStyle={{ background: 'rgb(247, 180, 0)', color: '#000' }}
+                                        contentArrowStyle={{ borderRight: '7px solid  rgb(247, 180, 0)' }}
+                                        iconStyle={{ background: 'rgb(247, 180, 0)', color: '#fff' }}
+                                        date={<p style={{ color: 'white' }}>
+                                            {formatDate(event.dateDebut)}
+                                            {event.dateFin ? (
+                                                <>-{formatDate(event.dateFin)}</>
+                                            ) : (
+                                                <></>
+                                            )}
+                                        </p>}
+                                        icon={<img className='historicIcon' src={event.thumbnailEvent} alt={` ${event.nomEvent}`} />}
+                                    >
+                                        <h3 className="vertical-timeline-element-title">{event.nomEvent}</h3>
+                                        <p>
+                                            {event.description}
+                                        </p>
+                                    </VerticalTimelineElement>
+                                ))}
                     </VerticalTimeline>
                 </div>
             )}

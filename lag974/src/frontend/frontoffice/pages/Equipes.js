@@ -9,14 +9,17 @@ import '../styles/Equipes.css';
 const Equipes = () => {
 
     const [jeux, setJeux] = useState([]);
+    const [isLoading, setIsLoading] = useState(false);
 
     useEffect(() => {
         const fetchJeuData = async () => {
             try {
+                setIsLoading(true);
                 const response = await axios.get(`/lagapi/jeux`);
                 // Mettre à jour l'état avec les données de l'équipe
                 setJeux(response.data.jeux);
                 console.log('reponse :', response.data.jeux);
+                setIsLoading(false);
             } catch (error) {
                 console.error("Erreur lors du chargement des données de l'équipe:", error);
             }
@@ -31,6 +34,9 @@ const Equipes = () => {
                     <h1 className='pageTitleContent'>EQUIPES</h1>
                 </div>
             </div>
+            {isLoading ? (
+                <div ><i className='bx bx-loader-circle bx-spin' style={{ color: '#fbf6f6' }} ></i></div>
+            ) : (
             <div className='equipesCardsContainer'>
                 {Array.isArray(jeux) && jeux.map(jeu => (
                     <NavLink key={jeu._id} className='navLinks' to={`/equipes/roster/${jeu.nomJeu}`}>
@@ -38,8 +44,9 @@ const Equipes = () => {
                     </NavLink>
                 ))}
             </div>
+            )}
         </div>
     )
 }
 
-export default Equipes
+export default Equipes 

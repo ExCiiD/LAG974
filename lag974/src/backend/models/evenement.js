@@ -12,7 +12,6 @@ const evenementSchema = new mongoose.Schema({
     },
     dateFin: {
         type: Date,
-        required: true
     },
     jeuEvenement: {
         type: String,

@@ -19,4 +19,4 @@ adminRouter.get('/admins/:id', requireRole('mainAdmin'), adminController.findOne
 adminRouter.put('/admins/:id', requireRole('mainAdmin'), adminController.update);
 
 //delete un admin avec l'id
-adminRouter.post('/admins/:id', requireRole('mainAdmin'), adminController.delete);
+adminRouter.delete('/admins/:id', requireRole('mainAdmin'), adminController.delete);

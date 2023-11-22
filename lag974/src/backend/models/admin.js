@@ -59,11 +59,11 @@ adminSchema.methods.sendConnectionLink = async function () {
     });
 
     // Génération du lien de connexion.
-    let connectionLink = "http://lag974.re/login/1stconnexion";
+    let connectionLink = "http://localhost:3000/backoffice/login";
 
     // Configuration des options de l'e-mail
     let mailOptions = {
-        from: '"lag974" <arisonsteaven@gmail.com>', // adresse de l'expéditeur
+        from: '"lag974" <staff.lag974@gmail.com>', // adresse de l'expéditeur
         to: this.email, // liste des destinataires
         subject: 'Lien de connexion pour lag974', // Sujet du courrier
         text: `Vous avez été inscrit en tant qu'administrateur du site lag974 avec les identifiants suivant : id : ${this.username} mdp : ${this.password}. Veuillez utiliser le lien suivant pour vous connecter: ${connectionLink}`, // corps du texte en texte brut

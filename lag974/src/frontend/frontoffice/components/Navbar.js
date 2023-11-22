@@ -40,7 +40,6 @@ function Navbar() {
         axios.get(`/lagapi/jeux`)
             .then(response => {
                 setJeux(response.data.jeux);
-                console.log(response.data.jeux);
             })
             .catch(error => {
                 console.error("Erreur lors du chargement des jeux:", error);

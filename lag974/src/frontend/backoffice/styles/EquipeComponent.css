@@ -31,3 +31,9 @@
     width: 120px;
     height: 120px;
 }
+
+.equipeBtnCtnr{
+    display: flex;
+    width: 100%;
+    justify-content: space-evenly;
+}

@@ -224,11 +224,11 @@ const EquipeComponent = () => {
                 />
             )}
             {selectedGameId && (
-                <div>
-                    <button onClick={() => handleShowComponent('roster')}>Roster</button>
-                    <button onClick={() => handleShowComponent('historic')}>Historique</button>
-                    <button onClick={() => handleDeleteGame(selectedGameId)}>Supprimer l'équipe</button>
-                    <button onClick={() => handleOpenUpdateForm(selectedGameId)}>Modifier le jeu</button>
+                <div className='equipeBtnCtnr'>
+                    <button className='backFormBtn' onClick={() => handleOpenUpdateForm(selectedGameId)}>Modifier le jeu</button>
+                    <button className='backFormBtn' onClick={() => handleDeleteGame(selectedGameId)}>Supprimer l'équipe</button>
+                    <button className='backFormBtn' onClick={() => handleShowComponent('roster')}>Roster</button>
+                    <button className='backFormBtn' onClick={() => handleShowComponent('historic')}>Historique</button>
                 </div>
             )}
 

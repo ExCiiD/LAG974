@@ -38,7 +38,7 @@ function Accueil() {
                 const response = await axios.get(`/lagapi/jeux`);
                 // Mettre à jour l'état avec les données de l'équipe
                 setJeux(response.data.jeux);
-                console.log('reponse :', response.data.jeux);
+                console.log('reponse jeux :', response.data.jeux);
             } catch (error) {
                 console.error("Erreur lors du chargement des données de l'équipe:", error);
             }

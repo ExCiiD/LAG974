@@ -158,9 +158,10 @@ const HistoricComponent = ({ gameId }) => {
                     <input className='backFormInput' type="date" name="dateDeFin" value={historicData?.dateDeFin ? formatDate(historicData.dateDeFin) : ''} onChange={handleInputChange} placeholder="Date de fin" />
                     <input className='backFormInput' type="number" name="classement" value={historicData?.classement || ''} onChange={handleInputChange} placeholder="Classement" required />
                     <input className='backFormInput' type="number" name="nombreEquipes" value={historicData?.nombreEquipes || ''} onChange={handleInputChange} placeholder="Nombre d'equipes" required />
-
-                    <button className='backFormBtn' type="submit">{editingEventId ? 'Modifier l\'événement' : 'Ajouter Événement'}</button>
-                    <button className='backFormBtn' type="button" onClick={toggleAddEventForm}>Annuler</button>
+                    <div className='backFormBtnCtnr'>
+                        <button className='backFormBtn' type="submit">{editingEventId ? 'Modifier l\'événement' : 'Ajouter Événement'}</button>
+                        <button className='backFormBtn' type="button" onClick={toggleAddEventForm}>Annuler</button>
+                    </div>
                 </form>
             ) : (
                 <div className='rosterContentcontainer'>

@@ -137,7 +137,7 @@ adminController.update = async (req, res) => {
 // Fonction pour supprimer un admin
 adminController.delete = async (req, res) => {
     try {
-        let admin = await Admin.findByIdAndDelete(req.params.id);
+        let admin = await Admin.findByIdAndRemove(req.params.id);
         if (admin) {
             return res.status(200).send({ message: "Admin supprimé avec succès" });
         } else {

@@ -10,7 +10,6 @@ import instagram from '../images/instagram.png';
 
 const PlayerCard = ({ photoJoueur, liensReseauxJoueur, nomJoueur, pseudoJoueur, prenomJoueur }) => {
 
-
     return (
         <div className="player-card">
             <div className='playerImgContainer'>

@@ -57,7 +57,7 @@ const EventDetails = () => {
                         <div className='blocGauche'>
                             <div className='sdImgContainer'>
                                 <div className='imgTestBloc'>
-                                    <img style={{ width: '100%', height: '100%' }} src={eventData.thumbnailEvent} alt={eventData.nomJeu} />
+                                        <img style={{ width: '100%', height: '100%' }} src={eventData.thumbnailEvent} alt={eventData.nomEvent} />
                                 </div>
                             </div>
                             <p>{eventData.description} </p>
